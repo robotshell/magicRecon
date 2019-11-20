@@ -11,11 +11,11 @@ YELLOW="\e[93m"
 
 echo -e "${BOLD}${GREEN}[+] Starting Subdomain Enumeration" 
 
-#starting sublist3r
+#Sublist3r
 
 sublist3r -d $1 -v -o domains.txt
 
-#running assetfinder
+#Assetfinder
 
 ~/go/bin/assetfinder --subs-only $1 | tee -a domains.txt
 
@@ -23,13 +23,13 @@ sublist3r -d $1 -v -o domains.txt
 
 sort -u domains.txt -o domains.txt
 
-#checking for alive domains
+#Alive domains
 
 echo -e ""
 echo "[+] Checking for alive domains.."
 cat domains.txt | ~/go/bin/httprobe | tee -a alive.txt
 
-#formatting the data to json
+#Parse data jo JSON 
 
 cat alive.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > alive.json
 
