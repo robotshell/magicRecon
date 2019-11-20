@@ -16,5 +16,7 @@ Recon is an essential element of any penetration testing. This repository contai
 * Aquatone
 
 # Usage
-`./magicRecon <domain>`
+```
+./magicRecon <domain>
+```
 
