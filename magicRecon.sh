@@ -4,10 +4,6 @@
 BOLD="\e[1m"
 NORMAL="\e[0m"
 GREEN="\e[92m"
-RED="\e[30m"
-MAGENTA="\e[95m"
-CYAN="\e[36m"
-YELLOW="\e[93m"
 
 echo -e "${BOLD}${GREEN}[+] Starting Subdomain Enumeration" 
 
@@ -98,13 +94,25 @@ do
 done
 
 ##############################################################
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] Starting Dirb to find directories"
+
+mkdir directories
+
+for domain in $(cat alive.txt)
+do	
+	NAME=$(echo $domain | awk -F/ '{print $3}')
+        dirb $domain -o directories/$NAME
+done
+
+##############################################################
 
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan"
+echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan for alive domains"
 
 mkdir nmapscans
 
-for domain in $(cat domains.txt)
+for domain in $(cat alive.txt)
 do
         nmap -sC -sV $domain | tee nmapscans/$domain
 done
@@ -118,8 +126,6 @@ mkdir screenshots
 
 CUR_DIR=$(pwd)
 
-mkdir endpoints/$1
-
-cat alive.txt | aquatone -out ~/$1/screenshots/
+cat alive.txt | aquatone -out screenshots/
 
 
