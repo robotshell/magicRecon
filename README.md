@@ -30,3 +30,4 @@ Recon is an essential element of any penetration testing. This repository contai
 ./magicRecon.sh <domain>
 ```
 
+### Warning: This code was originally created for personal use, it generates a substantial amount of traffic, please use with caution.
