@@ -1,4 +1,4 @@
-# ReconShell
+# MagicRecon
 
 # Description
 Recon is an essential element of any penetration testing. This repository contain a powerful shell script to maximize the recon and data collection process of an objective. With this script you can easily find:
@@ -7,10 +7,9 @@ Recon is an essential element of any penetration testing. This repository contai
 * Open S3 buckets.
 * Subdomain takeovers.
 * Open ports and services.
-* Error logs.
 * Endpoints.
+* Directories.
 * Other quick bugs.
-
 
 
 # Disclaimer :warning:
@@ -24,6 +23,7 @@ Recon is an essential element of any penetration testing. This repository contai
 * relative-url-extractor
 * Nmap
 * Aquatone
+* Dirb
 
 # Usage
 ```
