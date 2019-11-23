@@ -36,4 +36,4 @@ Recon is an essential element of any penetration testing. This repository contai
 # Donation
 * If you've earned a bug bounty using this tool, please consider donating to support it's development. You can help me to develop more useful tools. Thanks :heart_eyes:
 
-[![paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F4YABU5AH3NTQ&source=url)
+[https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F4YABU5AH3NTQ&source=url)
