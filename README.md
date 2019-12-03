@@ -24,7 +24,7 @@ Recon is an essential element of any penetration testing. This repository contai
 * relative-url-extractor
 * Nmap
 * Aquatone
-* Dirb
+* Dirsearch
 
 # Usage
 ```
