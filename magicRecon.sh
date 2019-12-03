@@ -15,15 +15,16 @@ sublist3r -d $1 -v -o domains.txt
 
 ~/go/bin/assetfinder --subs-only $1 | tee -a domains.txt
 
-#removing duplicate entries
+#Removing duplicate entries
 
 sort -u domains.txt -o domains.txt
 
-#Alive domains
-
+#Discovering alive domains
 echo -e ""
 echo "[+] Checking for alive domains.."
 cat domains.txt | ~/go/bin/httprobe | tee -a alive.txt
+
+sort alive.txt | uniq -u
 
 #Parse data jo JSON 
 
@@ -89,36 +90,15 @@ do
         mkdir endpoints/$domain
         for file in $(ls scriptsresponse/$domain)
         do
-                ruby ~/relative-url-extractor/extract.rb scriptsresponse/$domain/$file >> endpoints/$domain/$file 
+                ruby ~/relative-url-extractor/extract.rb scriptsresponse/$domain/$file >> endpoints/$domain/$file
+		
+		if [ ! -s endpoints/$domain/$file ] ; 
+		then
+  			rm endpoints/$domain/$file
+		fi
         done
 done
-
 ##############################################################
-echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Dirb to find directories"
-
-mkdir directories
-
-for domain in $(cat alive.txt)
-do	
-	NAME=$(echo $domain | awk -F/ '{print $3}')
-        dirb $domain -o directories/$NAME
-done
-
-##############################################################
-
-echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan for alive domains"
-
-mkdir nmapscans
-
-for domain in $(cat alive.txt)
-do
-        nmap -sC -sV $domain | tee nmapscans/$domain
-done
-
-##############################################################
-
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] Starting Aquatone to take screenshots"
 
@@ -126,6 +106,25 @@ mkdir screenshots
 
 CUR_DIR=$(pwd)
 
-cat alive.txt | aquatone -out screenshots/
+cat alive.txt | aquatone -screenshot-timeout 50000 -out screenshots/
+##############################################################
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan for alive domains"
 
+mkdir nmapscans
 
+for domain in $(cat domains.txt)
+do
+        nmap -sC -sV -v $domain | tee nmapscans/$domain
+done
+##############################################################
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] Starting Dirsearch to find directories"
+
+mkdir directories
+
+for domain in $(cat alive.txt)
+do	
+	NAME=$(echo $domain | awk -F/ '{print $3}')
+        python3 ~/dirsearch/dirsearch.py -e php,asp,aspx,jsp,html,zip,jar -u $domain -t 100 --plain-text-report=directories/$NAME
+done
