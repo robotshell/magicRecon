@@ -1,19 +1,49 @@
 #!/bin/bash
 
-#Colors
+#########CONFIGURATION#########
+#PARAMETERS
+subjackThreads=100
+subjackTime=30
+gobusterDNSThreads=50
+gobusterDictionaryPath=~/SecLists/Discovery/DNS/namelist.txt
+aquatoneTimeout=50000
+gobusterDirThreads=50
+gobusterDictionaryPathDir=~/SecLists/Discovery/Web-Content/raft-medium-files-directories.txt
+githubToken=YOUR GITHUB TOKEN
+
+#COLORS
 BOLD="\e[1m"
 NORMAL="\e[0m"
 GREEN="\e[92m"
 
+#########SUBDOMAIN ENUMERATIONS#########
 echo -e "${BOLD}${GREEN}[+] Starting Subdomain Enumeration" 
 
-#Sublist3r
+#Amass
+echo -e "${GREEN}[+] Starting Amass"
+amass enum -norecursive -noalts -d $1 -o domains.txt
 
-sublist3r -d $1 -v -o domains.txt
+#Crt.sh
+echo -e "${GREEN}[+] Starting Certsh.py"
+python ~/CertificateTransparencyLogs/certsh.py -d $1 | tee -a domains.txt
+
+#Github-Search
+echo -e "${GREEN}[+] Starting Github-subdomains.py"
+python3 ~/github-search/github-subdomains.py -d $1 -t $githubToken | tee -a domains.txt
+
+#Gobuster
+echo -e "${GREEN}[+] Starting Gobuster DNS"
+gobuster dns -d $1 -w $gobusterDictionaryPath -t $gobusterDNSThreads -o gobusterDomains.txt
+sed 's/Found: //g' gobusterDomains.txt >> domains.txt
+rm gobusterDomains.txt
 
 #Assetfinder
-
+echo -e "${GREEN}[+] Starting Assetfinder"
 ~/go/bin/assetfinder --subs-only $1 | tee -a domains.txt
+
+#Subjack
+echo -e "${GREEN}[+] Starting Subjack for search subdomains takevoer"
+subjack -w domains.txt -t $subjackThreads -timeout $subjackTime -ssl -c ~/subjack/fingerprints.json -v 3
 
 #Removing duplicate entries
 
@@ -26,14 +56,23 @@ cat domains.txt | ~/go/bin/httprobe | tee -a alive.txt
 
 sort alive.txt | uniq -u
 
+#Aquatone
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] Starting Aquatone to take screenshots"
+
+mkdir screenshots
+
+CUR_DIR=$(pwd)
+
+cat alive.txt | aquatone -screenshot-timeout $aquatoneTimeout -out screenshots/
+
 #Parse data jo JSON 
 
 cat alive.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > alive.json
 
 cat domains.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > domains.json
 
-##############################################################
-
+#########SUBDOMAIN HEADERS#########
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] Storing subdomain headers and response bodies"
 
@@ -49,8 +88,7 @@ do
         curl -s -X GET -H "X-Forwarded-For: evil.com" -L $x > "$CURRENT_PATH/responsebody/$NAME"
 done
 
-##############################################################
-
+#########JAVASCRIPT FILES#########
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] Collecting JavaScript files and Hidden Endpoints"
 
@@ -98,16 +136,49 @@ do
 		fi
         done
 done
-##############################################################
+
+echo -e "${GREEN}[+] Starting Jsearch.py"
+organitzationName= sed 's/.com//' <<< "$1" 
+mkdir javascript
+
+for domain in $(cat alive.txt)
+do	
+	NAME=$(echo $domain | awk -F/ '{print $3}')
+	cd javascript/
+	mkdir $NAME
+	echo -e "${GREEN}[+] Searching JS files for $NAME"
+	echo -e ""
+	python3 ~/jsearch/jsearch.py -u $domain -n "$organitzationName" | tee -a $NAME.txt
+
+	if [ -z "$(ls -A $NAME/)" ] ; 
+	then
+		rmdir $NAME
+	fi
+
+	if [ ! -s $NAME.txt ] ; 
+	then
+		rm $NAME.txt
+	fi	
+
+	cd ..
+done
+#########FILES AND DIRECTORIES#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Aquatone to take screenshots"
+echo -e "${BOLD}${GREEN}[+] Starting Gobuster to find directories and hidden files"
 
-mkdir screenshots
+mkdir directories
 
-CUR_DIR=$(pwd)
-
-cat alive.txt | aquatone -screenshot-timeout 50000 -out screenshots/
-##############################################################
+for domain in $(cat alive.txt)
+do	
+	NAME=$(echo $domain | awk -F/ '{print $3}')
+	gobuster dir -u $domain -w $gobusterDictionaryPathDir -t $gobusterDirThreads -o directories/$NAME
+	
+	if [ ! -s directories/$NAME ] ; 
+	then
+		rm directories/$NAME
+	fi
+done
+#########NMAP#########
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan for alive domains"
 
@@ -116,15 +187,4 @@ mkdir nmapscans
 for domain in $(cat domains.txt)
 do
         nmap -sC -sV -v $domain | tee nmapscans/$domain
-done
-##############################################################
-echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Dirsearch to find directories"
-
-mkdir directories
-
-for domain in $(cat alive.txt)
-do	
-	NAME=$(echo $domain | awk -F/ '{print $3}')
-        python3 ~/dirsearch/dirsearch.py -e php,asp,aspx,jsp,html,zip,jar -u $domain -t 100 --plain-text-report=directories/$NAME
 done
