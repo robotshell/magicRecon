@@ -33,7 +33,6 @@ Recon is an essential element of any penetration testing. This repository contai
 * [SecLists](https://github.com/danielmiessler/SecLists)
 
 ### IMPORTANT: YOU NEED TO INSTALL ALL THE TOOLS IN YOUR HOME FOLDER AND INSERT YOUR GITHUB TOKEN IN THE SCRIPT CONFIGURATION TO USE Github-subdomains.py.
-![Configuration image](https://raw.githubusercontent.com/robotshell/magicRecon/master/configuration.png)
 
 # How does it work?
 The script has 5 phases:
@@ -48,7 +47,7 @@ The script has 5 phases:
 
 5. Nmap: Nmap is used to scan ports and services quiclky.
 
-###  All the data generated in the different processes are saved in different files and directories.
+###  All the data generated in the different processes are saved in different files and directories in different formats.
 ![Example image](https://raw.githubusercontent.com/robotshell/magicRecon/master/example.png)
 
 # Usage
