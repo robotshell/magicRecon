@@ -9,6 +9,7 @@ Recon is an essential element of any penetration testing. This repository contai
 * Open ports and services.
 * Endpoints.
 * Directories.
+* Javascript files with senstive info
 * Other quick bugs.
 
 
