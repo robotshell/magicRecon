@@ -1,4 +1,10 @@
 # MagicRecon
+                       _      ____                      
+ _ __ ___   __ _  __ _(_) ___|  _ \ ___  ___ ___  _ __  
+| '_ ` _ \ / _` |/ _` | |/ __| |_) / _ \/ __/ _ \| '_ \ 
+| | | | | | (_| | (_| | | (__|  _ <  __/ (_| (_) | | | |
+|_| |_| |_|\__,_|\__, |_|\___|_| \_\___|\___\___/|_| |_|
+                 |___/                                  
 
 # Description
 Recon is an essential element of any penetration testing. This repository contain a powerful shell script to maximize the recon and data collection process of an objective. With this script you can easily find:
@@ -37,7 +43,7 @@ Recon is an essential element of any penetration testing. This repository contai
 # How does it work?
 The script has 5 phases:
 
-1. Subdomain enumeration: The Amass, Certsh.py, Github-subdomains.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. Then Subjack is used to quickly check if it exists subdomains takeover. Finally, Aquatone takes screenshots of each subdomain.
+1. Subdomain enumeration: Amass, Certsh.py, Github-subdomains.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. Then Subjack is used to quickly check if it exists subdomains takeover. Finally, Aquatone takes screenshots of each subdomain.
 
 2. Headers: curl is used to obtain the headers of each subdomain. 
 
