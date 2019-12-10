@@ -17,14 +17,18 @@ Recon is an essential element of any penetration testing. This repository contai
 **Warning: This code was originally created for personal use, it generates a substantial amount of traffic, please use with caution.**
 
 # Tools needed
-* Sublist3r 
+* Amass
+* Certsh.py
+* Github-subdomains.py
+* Gobuster
 * Assetfinder
-* httprobe 
+* Subjack
+* httprobe
+* Aquatone
 * curl
 * relative-url-extractor
+* Jsearch.py
 * Nmap
-* Aquatone
-* Dirsearch
 
 # Usage
 ```
