@@ -37,11 +37,11 @@ Recon is an essential element of any penetration testing. This repository contai
 # How does it work?
 The script has 5 phases:
 
-1. Subdomain enumeration: Amass, Certsh.py, Github-subdomains.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. Then Subjack is used to quickly check if it exists subdomains takeover. Finally, Aquatone takes screenshots of each subdomain.
+1. Subdomain enumeration: Amass, Certsh.py, Github-subdomains.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. httprobe is used to probe for working http and https servers. Then Subjack is used to quickly check if it exists subdomains takeover. Finally, Aquatone takes screenshots of each subdomain.
 
 2. Headers: curl is used to obtain the headers of each subdomain. 
 
-3. Javascript: relative-url-extractor and Jsearch.py are used to inspect the javascript files of each subdomain for endpoints sensitive information.
+3. Javascript: relative-url-extractor and Jsearch.py are used to inspect the javascript files of each subdomain for endpoints and sensitive information.
 
 4. Directories and hidden files: Gobuster DIR is used to collect hidden files and directories through a dictionary. You can change the dictionary in the script configuration.
 
