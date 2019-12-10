@@ -19,17 +19,17 @@ Recon is an essential element of any penetration testing. This repository contai
 # Tools needed
 * [Amass](https://github.com/OWASP/Amass)
 * [Certsh.py](https://github.com/ghostlulzhacks/CertificateTransparencyLogs)
-* [Github-subdomains.py] (https://github.com/gwen001/github-search)
-* [Gobuster] (https://github.com/OJ/gobuster)
-* [Assetfinder] (https://github.com/tomnomnom/assetfinder)
-* [Subjack] (https://github.com/haccer/subjack)
-* [httprobe] (https://github.com/tomnomnom/httprobe)
-* [Aquatone] (https://github.com/michenriksen/aquatone)
-* [curl] (https://curl.haxx.se/)
-* [relative-url-extractor] (https://github.com/jobertabma/relative-url-extractor)
-* [Jsearch.py] (https://github.com/incogbyte/jsearch)
-* [Nmap] (https://nmap.org/)
-* [SecLists] (https://github.com/danielmiessler/SecLists)
+* [Github-subdomains.py](https://github.com/gwen001/github-search)
+* [Gobuster](https://github.com/OJ/gobuster)
+* [Assetfinder](https://github.com/tomnomnom/assetfinder)
+* [Subjack](https://github.com/haccer/subjack)
+* [httprobe](https://github.com/tomnomnom/httprobe)
+* [Aquatone](https://github.com/michenriksen/aquatone)
+* [curl](https://curl.haxx.se/)
+* [relative-url-extractor](https://github.com/jobertabma/relative-url-extractor)
+* [Jsearch.py](https://github.com/incogbyte/jsearch)
+* [Nmap](https://nmap.org/)
+* [SecLists](https://github.com/danielmiessler/SecLists)
 
 # Usage
 ```
