@@ -31,6 +31,8 @@ Recon is an essential element of any penetration testing. This repository contai
 * [Nmap](https://nmap.org/)
 * [SecLists](https://github.com/danielmiessler/SecLists)
 
+### IMPORTANT: YOU NEED TO INSTALL ALL THE TOOLS IN YOUR HOME FOLDER
+
 # Usage
 ```
 ./magicRecon.sh <domain>
