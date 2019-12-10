@@ -1,10 +1,4 @@
-# MagicRecon
-                       _      ____                      
- _ __ ___   __ _  __ _(_) ___|  _ \ ___  ___ ___  _ __  
-| '_ ` _ \ / _` |/ _` | |/ __| |_) / _ \/ __/ _ \| '_ \ 
-| | | | | | (_| | (_| | | (__|  _ <  __/ (_| (_) | | | |
-|_| |_| |_|\__,_|\__, |_|\___|_| \_\___|\___\___/|_| |_|
-                 |___/                                  
+# MagicRecon                            
 
 # Description
 Recon is an essential element of any penetration testing. This repository contain a powerful shell script to maximize the recon and data collection process of an objective. With this script you can easily find:
