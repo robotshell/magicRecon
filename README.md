@@ -4,12 +4,14 @@
 Recon is an essential element of any penetration testing. This repository contain a powerful shell script to maximize the recon and data collection process of an objective. With this script you can easily find:
 
 * Sensitive information disclosure.
+* Missing HTTP headers
 * Open S3 buckets.
 * Subdomain takeovers.
 * Open ports and services.
 * Endpoints.
 * Directories.
 * Javascript files with senstive info
+* CORS missconfigurations
 * Other quick bugs.
 
 
