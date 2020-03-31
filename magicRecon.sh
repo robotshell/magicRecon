@@ -17,7 +17,17 @@ NORMAL="\e[0m"
 GREEN="\e[92m"
 
 #########SUBDOMAIN ENUMERATIONS#########
-echo -e "${BOLD}${GREEN}[+] Starting Subdomain Enumeration" 
+echo -e "${BOLD}${GREEN}[+] Welcome to MagicRecon"
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] MagicRecon has 5 steps: " 
+echo -e "${BOLD}${GREEN}[+] STEP 1: Subdomain Enumeration" 
+echo -e "${BOLD}${GREEN}[+] STEP 2: JavaScript files and Hidden Endpoints"
+echo -e "${BOLD}${GREEN}[+] STEP 3: Find directories and hidden files" 
+echo -e "${BOLD}${GREEN}[+] STEP 4: Port scan for alive domains" 
+echo -e "${BOLD}${GREEN}[+] STEP 5: Subdomain headers and response bodies" 
+
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] STEP 1: Starting Subdomain Enumeration" 
 
 #Amass
 echo -e "${GREEN}[+] Starting Amass"
@@ -56,6 +66,11 @@ cat domains.txt | ~/go/bin/httprobe | tee -a alive.txt
 
 sort alive.txt | uniq -u
 
+#Corsy
+echo -e ""
+echo -e "${GREEN}[+] Starting Corsy to find CORS missconfigurations"
+python3 ~/Corsy/corsy.py -i alive.txt -o CORS.txt
+
 #Aquatone
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] Starting Aquatone to take screenshots"
@@ -72,25 +87,9 @@ cat alive.txt | python -c "import sys; import json; print (json.dumps({'domains'
 
 cat domains.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > domains.json
 
-#########SUBDOMAIN HEADERS#########
-echo -e ""
-echo -e "${BOLD}${GREEN}[+] Storing subdomain headers and response bodies"
-
-mkdir headers
-mkdir responsebody
-
-CURRENT_PATH=$(pwd)
-
-for x in $(cat alive.txt)
-do
-        NAME=$(echo $x | awk -F/ '{print $3}')
-        curl -X GET -H "X-Forwarded-For: evil.com" $x -I > "$CURRENT_PATH/headers/$NAME"
-        curl -s -X GET -H "X-Forwarded-For: evil.com" -L $x > "$CURRENT_PATH/responsebody/$NAME"
-done
-
 #########JAVASCRIPT FILES#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Collecting JavaScript files and Hidden Endpoints"
+echo -e "${BOLD}${GREEN}[+] STEP 2: Collecting JavaScript files and Hidden Endpoints"
 
 mkdir scripts
 mkdir scriptsresponse
@@ -162,9 +161,10 @@ do
 
 	cd ..
 done
+
 #########FILES AND DIRECTORIES#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Gobuster to find directories and hidden files"
+echo -e "${BOLD}${GREEN}[+] STEP 3: Starting Gobuster to find directories and hidden files"
 
 mkdir directories
 
@@ -178,9 +178,10 @@ do
 		rm directories/$NAME
 	fi
 done
+
 #########NMAP#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Nmap Scan for alive domains"
+echo -e "${BOLD}${GREEN}[+]STEP 4: Starting Nmap Scan for alive domains"
 
 mkdir nmapscans
 
@@ -188,3 +189,20 @@ for domain in $(cat domains.txt)
 do
         nmap -sC -sV -v $domain | tee nmapscans/$domain
 done
+
+#########SUBDOMAIN HEADERS#########
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] STEP 5: Storing subdomain headers and response bodies" 
+
+mkdir headers
+mkdir responsebody
+
+CURRENT_PATH=$(pwd)
+
+for x in $(cat alive.txt)
+do
+        NAME=$(echo $x | awk -F/ '{print $3}')
+        curl -X GET -H "X-Forwarded-For: evil.com" $x -I > "$CURRENT_PATH/headers/$NAME"
+        curl -s -X GET -H "X-Forwarded-For: evil.com" -L $x > "$CURRENT_PATH/responsebody/$NAME"
+done
+
