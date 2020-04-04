@@ -93,6 +93,7 @@ echo -e "${BOLD}${GREEN}[+] STEP 2: Collecting JavaScript files and Hidden Endpo
 
 mkdir scripts
 mkdir scriptsresponse
+mkdir responsebody
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -195,7 +196,6 @@ echo -e ""
 echo -e "${BOLD}${GREEN}[+] STEP 5: Storing subdomain headers and response bodies" 
 
 mkdir headers
-mkdir responsebody
 
 CURRENT_PATH=$(pwd)
 
