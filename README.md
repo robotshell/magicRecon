@@ -42,7 +42,7 @@ Recon is an essential element of any penetration testing. This repository contai
 ### IMPORTANT: YOU NEED TO INSTALL ALL THE TOOLS IN YOUR HOME FOLDER.
 
 # How does it work?
-The script has 5 phases:
+The script has 6 phases:
 
 1. Subdomain enumeration: Amass, Certsh.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. httprobe is used to probe for working http and https servers. Then Subjack is used to quickly check if it exists subdomains takeover. Corsy tool is used to find CORS missconfigurations. Finally, Aquatone takes screenshots of each subdomain.
 
