@@ -9,50 +9,69 @@ gobusterDictionaryPath=~/SecLists/Discovery/DNS/namelist.txt
 aquatoneTimeout=50000
 gobusterDirThreads=50
 gobusterDictionaryPathDir=~/SecLists/Discovery/Web-Content/raft-medium-files-directories.txt
-githubToken=YOUR GITHUB TOKEN
+testsslParameters="--quiet --fast -p -s -S -h -U --color 3 --htmlfile"
 
 #COLORS
 BOLD="\e[1m"
 NORMAL="\e[0m"
-GREEN="\e[92m"
+GREEN="\033[1;32m"
+MAGENTA="\e[95m"
+YELLOW="\e[33m"
+DEFAULT="\e[39m"
+
+#########HELP SECTION#########
+if [ "$1" == "-h" ]; then
+	echo -e "${BOLD}${GREEN}[+] MagicRecon is a powerful shell script to maximize the data collection process of an objective. Has 5 steps:" 
+	echo -e "${NORMAL}${GREEN}[+] STEP 1: Subdomain Enumeration"
+	echo -e "${DEFAULT}${NORMAL}Amass, Certsh.py, Gobuster DNS and Assetfinder tools are used to find the maximum possible number of subdomains. httprobe is used to probe for working http and https servers. Then Subjack is used to quickly check if it exists subdomains takeover. Corsy tool is used to find CORS missconfigurations. Finally, Aquatone takes screenshots of each subdomain."
+	echo -e "${NORMAL}${GREEN}[+] STEP 2: Scan for missing headers and bugs in SSL/TLS protocols" 
+	echo -e "${DEFAULT}${NORMAL}securityheaders is used to check quickly and easily the security of HTTP response headers and testssl.sh is used to check the TLS/SSL ciphers, protocols and cryptographic flaws."
+	echo -e "${NORMAL}${GREEN}[+] STEP 3: Scan if a domain can be spoofed" 
+	echo -e "${DEFAULT}${NORMAL}spoofcheck is used to check SPF and DMARC records for weak configurations that allow spoofing."
+	echo -e "${NORMAL}${GREEN}[+] STEP 4: JavaScript files and hidden endpoints"
+	echo -e "${DEFAULT}${NORMAL}LinkFinder is used to discover endpoints and their parameters in JavaScript files."
+	echo -e "${NORMAL}${GREEN}[+] STEP 5: Find directories and hidden files" 
+	echo -e "${DEFAULT}${NORMAL}Gobuster DIR is used to collect hidden files and directories through a dictionary. You can change the dictionary in the script configuration."
+	echo -e "${NORMAL}${GREEN}[+] STEP 6: Port scan for alive domains" 
+	echo -e "${DEFAULT}${NORMAL}Nmap is used to scan ports and services quiclky."
+	echo -e "" 
+	echo -e "${BOLD}${GREEN}You have more information in https://github.com/robotshell/magicRecon"
+	echo -e "" 
+	echo -e "${BOLD}${YELLOW}[+] DON'T FORGET -> If you found the tool useful please consider donating to support it's development. You can help me to develop more useful tools. THANKS :)" 
+	echo -e "" 
+	echo -e "${BOLD}${GREEN}[+] AUTHOR: ROBOTSHELL" 
+	echo -e "${BOLD}${GREEN}[+] TWITTER: https://twitter.com/robotshelld" 
+  exit 0
+fi
 
 #########SUBDOMAIN ENUMERATIONS#########
-echo -e "${BOLD}${GREEN}[+] Welcome to MagicRecon"
+printf "${MAGENTA}"
+figlet "MagicRecon"
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] MagicRecon has 5 steps: " 
-echo -e "${BOLD}${GREEN}[+] STEP 1: Subdomain Enumeration" 
-echo -e "${BOLD}${GREEN}[+] STEP 2: Subdomain headers and response bodies" 
-echo -e "${BOLD}${GREEN}[+] STEP 3: JavaScript files and Hidden Endpoints"
-echo -e "${BOLD}${GREEN}[+] STEP 4: Find directories and hidden files" 
-echo -e "${BOLD}${GREEN}[+] STEP 5: Port scan for alive domains" 
 
 echo -e ""
 echo -e "${BOLD}${GREEN}[+] STEP 1: Starting Subdomain Enumeration" 
 
 #Amass
-echo -e "${GREEN}[+] Starting Amass"
+echo -e "${BOLD}${YELLOW}[+] Starting Amass${DEFAULT}${NORMAL}"
 amass enum -norecursive -noalts -d $1 -o domains.txt
 
 #Crt.sh
-echo -e "${GREEN}[+] Starting Certsh.py"
+echo -e "${BOLD}${YELLOW}[+] Starting Certsh.py${DEFAULT}${NORMAL}"
 python ~/CertificateTransparencyLogs/certsh.py -d $1 | tee -a domains.txt
 
-#Github-Search
-echo -e "${GREEN}[+] Starting Github-subdomains.py"
-python3 ~/github-search/github-subdomains.py -d $1 -t $githubToken | tee -a domains.txt
-
 #Gobuster
-echo -e "${GREEN}[+] Starting Gobuster DNS"
+echo -e "${BOLD}${YELLOW}[+] Starting Gobuster DNS${DEFAULT}${NORMAL}"
 gobuster dns -d $1 -w $gobusterDictionaryPath -t $gobusterDNSThreads -o gobusterDomains.txt
 sed 's/Found: //g' gobusterDomains.txt >> domains.txt
 rm gobusterDomains.txt
 
 #Assetfinder
-echo -e "${GREEN}[+] Starting Assetfinder"
+echo -e "${BOLD}${YELLOW}[+] Starting Assetfinder${DEFAULT}${NORMAL}"
 ~/go/bin/assetfinder --subs-only $1 | tee -a domains.txt
 
 #Subjack
-echo -e "${GREEN}[+] Starting Subjack for search subdomains takevoer"
+echo -e "${BOLD}${YELLOW}[+] Starting Subjack for search subdomains takevoer${DEFAULT}${NORMAL}"
 subjack -w domains.txt -t $subjackThreads -timeout $subjackTime -ssl -c ~/subjack/fingerprints.json -v 3
 
 #Removing duplicate entries
@@ -61,25 +80,34 @@ sort -u domains.txt -o domains.txt
 
 #Discovering alive domains
 echo -e ""
-echo "[+] Checking for alive domains.."
+echo "[+] Checking for alive domains..${DEFAULT}${NORMAL}"
 cat domains.txt | ~/go/bin/httprobe | tee -a alive.txt
 
 sort alive.txt | uniq -u
 
+#Removing http/https protocol from alive.txt
+cp alive.txt alive-subdomains.txt
+sed -i 's#^http://##; s#/score/$##' alive-subdomains.txt
+sed -i 's#^https://##; s#/score/$##' alive-subdomains.txt
+sort -u alive-subdomains.txt -o alive-subdomains.txt
+
 #Corsy
 echo -e ""
-echo -e "${GREEN}[+] Starting Corsy to find CORS missconfigurations"
+echo -e "${BOLD}${YELLOW}[+] Starting Corsy to find CORS missconfigurations${DEFAULT}${NORMAL}"
 python3 ~/Corsy/corsy.py -i alive.txt -o CORS.txt
 
 #Aquatone
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] Starting Aquatone to take screenshots"
+echo -e "${BOLD}${YELLOW}[+] Starting Aquatone to take screenshots${DEFAULT}${NORMAL}"
+
+if [ -d screenshots ]; then rm -Rf screenshots; fi
 
 mkdir screenshots
 
 CUR_DIR=$(pwd)
 
-cat alive.txt | aquatone -screenshot-timeout $aquatoneTimeout -out screenshots/
+cat alive.txt | ~/aquatone/aquatone -screenshot-timeout $aquatoneTimeout -out screenshots/
+
 
 #Parse data jo JSON 
 
@@ -87,100 +115,93 @@ cat alive.txt | python -c "import sys; import json; print (json.dumps({'domains'
 
 cat domains.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > domains.json
 
-#########SUBDOMAIN HEADERS#########
+cat alive-subdomains.txt | python -c "import sys; import json; print (json.dumps({'domains':list(sys.stdin)}))" > alive-subdomains.json
+
+#########MISSING HEADERS AND SSL/TLS PROTOCOLS#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] STEP 2: Storing subdomain headers and response bodies" 
+echo -e "${BOLD}${GREEN}[+] STEP 2: Scan for missing headers and SSL/TLS protocols${DEFAULT}${NORMAL}"
+echo -e "${BOLD}${YELLOW}[+] Starting securityheaders for search missing headers${DEFAULT}${NORMAL}"
+
+#Scan for missing headers 
+if [ -d headers ]; then rm -Rf headers; fi
 
 mkdir headers
 
 CURRENT_PATH=$(pwd)
 
-for x in $(cat alive.txt)
+for x in $(cat alive-subdomains.txt)
 do
-        NAME=$(echo $x | awk -F/ '{print $3}')
-        curl -X GET -H "X-Forwarded-For: evil.com" $x -I > "$CURRENT_PATH/headers/$NAME"
-        curl -s -X GET -H "X-Forwarded-For: evil.com" -L $x > "$CURRENT_PATH/responsebody/$NAME"
+        NAME=$(echo $x)
+	echo -e "${YELLOW}Analyzing headers to" $x
+        python ~/securityheaders/securityheaders.py $x --skipcheckers InfoCollector --formatter markdown > "$CURRENT_PATH/headers/$NAME"
 done
 
+if [ -d ssl ]; then rm -Rf ssl; fi
+
+echo -e ""
+
+#Scan for vulns in SSL/TLS protocols
+echo -e "${BOLD}${YELLOW}[+] Starting testssl.sh for search bugs in TLS/SSL ciphers, protocols and cryptographic flaws${DEFAULT}${NORMAL}"
+mkdir ssl
+
+CURRENT_PATH=$(pwd)
+
+cd ssl/
+
+for x in $(cat ../alive-subdomains.txt)
+do
+        NAMEFILE=$x
+	EXTENSION=".html"
+	NAMEEXTENSION="$NAMEFILE$EXTENSION"
+	echo -e "${YELLOW}Analyzing SSL/TLS ciphers, protocols and cryptographic flaws to" $x
+	~/testssl.sh/./testssl.sh $testsslParameters $NAMEEXTENSION $x > /dev/null
+
+done
+
+cd ..
+
+#########SPF and DMARC records#########
+echo -e ""
+echo -e "${BOLD}${GREEN}[+] STEP 3: Scan if a domain can be spoofed${DEFAULT}${NORMAL}"
+echo -e "${BOLD}${YELLOW}[+] Starting spoofcheck for search SPF and DMARC records${DEFAULT}${NORMAL}"
+
+if [ -d JS ]; then rm -Rf JS; fi
+
+mkdir email
+
+CURRENT_PATH=$(pwd)
+
+for domain in $(cat alive-subdomains.txt)
+do	
+	NAMEFILE=$domain
+	EXTENSION=".txt"
+	NAMEEXTENSION="$NAMEFILE$EXTENSION"
+	echo -e "${YELLOW}Analyzing SPF and DMARC records for weak configurations that allow spoofing to" $domain
+	python ~/spoofcheck/spoofcheck.py $domain >> "$CURRENT_PATH/email/$NAMEEXTENSION"
+done
 #########JAVASCRIPT FILES#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] STEP 3: Collecting JavaScript files and Hidden Endpoints"
+echo -e "${BOLD}${GREEN}[+] STEP 4: Collecting JavaScript files and Hidden Endpoints${DEFAULT}${NORMAL}"
+echo -e "${BOLD}${YELLOW}[+] Starting LinkFinder for discover endpoints in JavaScript files${DEFAULT}${NORMAL}"
 
-mkdir scripts
-mkdir scriptsresponse
-mkdir responsebody
+if [ -d JS ]; then rm -Rf JS; fi
 
-RED='\033[0;31m'
-NC='\033[0m'
-CUR_PATH=$(pwd)
+mkdir JS
 
-for x in $(ls "$CUR_PATH/responsebody")
-do
-        printf "\n\n${RED}$x${NC}\n\n"
-        END_POINTS=$(cat "$CUR_PATH/responsebody/$x" | grep -Eoi "src=\"[^>]+></script>" | cut -d '"' -f 2)
-        for end_point in $END_POINTS
-        do
-                len=$(echo $end_point | grep "http" | wc -c)
-                mkdir "scriptsresponse/$x/"
-                URL=$end_point
-                if [ $len == 0 ]
-                then
-                        URL="https://$x$end_point"
-                fi
-                file=$(basename $end_point)
-                curl -X GET $URL -L > "scriptsresponse/$x/$file"
-                echo $URL >> "scripts/$x"
-        done
-done
-
-mkdir endpoints
-
-CUR_DIR=$(pwd)
-
-for domain in $(ls scriptsresponse)
-do
-        #looping through files in each domain
-        mkdir endpoints/$domain
-        for file in $(ls scriptsresponse/$domain)
-        do
-                ruby ~/relative-url-extractor/extract.rb scriptsresponse/$domain/$file >> endpoints/$domain/$file
-		
-		if [ ! -s endpoints/$domain/$file ] ; 
-		then
-  			rm endpoints/$domain/$file
-		fi
-        done
-done
-
-echo -e "${GREEN}[+] Starting Jsearch.py"
-organitzationName= sed 's/.com//' <<< "$1" 
-mkdir javascript
+CURRENT_PATH=$(pwd)
 
 for domain in $(cat alive.txt)
 do	
-	NAME=$(echo $domain | awk -F/ '{print $3}')
-	cd javascript/
-	mkdir $NAME
-	echo -e "${GREEN}[+] Searching JS files for $NAME"
-	echo -e ""
-	python3 ~/jsearch/jsearch.py -u $domain -n "$organitzationName" | tee -a $NAME.txt
-
-	if [ -z "$(ls -A $NAME/)" ] ; 
-	then
-		rmdir $NAME
-	fi
-
-	if [ ! -s $NAME.txt ] ; 
-	then
-		rm $NAME.txt
-	fi	
-
-	cd ..
+	NAMEFILE=$(echo $domain | awk -F/ '{print $3}')
+	EXTENSION=".txt"
+	NAMEEXTENSION="$NAMEFILE$EXTENSION"
+	echo -e "${YELLOW}Analyzing JS files for endpoints, API Keys and many more to" $domain
+	python ~/LinkFinder/linkfinder.py -d -i $domain -o cli >> "$CURRENT_PATH/JS/$NAMEEXTENSION"
 done
 
 #########FILES AND DIRECTORIES#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+] STEP 4: Starting Gobuster to find directories and hidden files"
+echo -e "${BOLD}${GREEN}[+] STEP 5: Starting Gobuster to find directories and hidden files${DEFAULT}${NORMAL}"
 
 mkdir directories
 
@@ -197,7 +218,7 @@ done
 
 #########NMAP#########
 echo -e ""
-echo -e "${BOLD}${GREEN}[+]STEP 5: Starting Nmap Scan for alive domains"
+echo -e "${BOLD}${GREEN}[+]STEP 6: Starting Nmap Scan for alive domains${DEFAULT}${NORMAL}"
 
 mkdir nmapscans
 
