@@ -1,4 +1,4 @@
-# MagicRecon          
+# MagicRecon v2.0          
 MagicRecon is a powerful shell script to maximize the recon and data collection process of an objective and finding common vulnerabilities, all this saving the results obtained in an organized way in directories and with various formats.
 
 The new version of MagicRecon has a large number of new tools to automate as much as possible the process of collecting data from a target and searching for vulnerabilities. It also has a menu where the user can select which option he wants to execute.
@@ -59,7 +59,6 @@ To run the project, you will need to install the following tools:
 * [Nmap](https://nmap.org/)
 
 ### IMPORTANT: Remember to configure the Notify and Subfinder tools to work properly.
-
 
 # Usage
 ```
