@@ -58,7 +58,8 @@ To run the project, you will need to install the following tools:
 * [linkfiner](https://github.com/GerbenJavado/LinkFinder)
 * [Nmap](https://nmap.org/)
 
-### IMPORTANT: YOU NEED TO INSTALL MAGICRECON IN YOUR HOME FOLDER.
+### IMPORTANT: Remember to configure the Notify and Subfinder tools to work properly.
+
 
 # Usage
 ```
