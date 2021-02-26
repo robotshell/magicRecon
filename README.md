@@ -1,6 +1,8 @@
 # MagicRecon          
 MagicRecon is a powerful shell script to maximize the recon and data collection process of an objective and finding common vulnerabilities, all this saving the results obtained in an organized way in directories and with various formats.
+
 The new version of MagicRecon has a large number of new tools to automate as much as possible the process of collecting data from a target and searching for vulnerabilities. It also has a menu where the user can select which option he wants to execute.
+
 This new version also has the option of "Install dependencies" with which the user can easily install all the tools and dependencies that are needed to run MagicRecon. The script code has been made in a modular way so that any user can modify it to their liking. 
 With MagicRecon you can easily find:
 
