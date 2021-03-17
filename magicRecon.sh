@@ -49,6 +49,9 @@ installation(){
 
 	source ~/.bashrc
 
+	#Install Gospider
+	sudo apt install gospider 
+
 	#Install Subfinder
 	GO111MODULE=on go get -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
 
@@ -60,6 +63,9 @@ installation(){
 
 	#Install nuclei
 	GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+	
+	# Install Gau
+	GO111MODULE=on go get -u -v github.com/lc/gau
 
 	#Install nuclei-templates, SecLists, Corsy, Security Headers, Ssl checker, SecretFinder, spoof-check, Linkfinder
 	cd $HOME
@@ -90,6 +96,16 @@ installation(){
 	git clone https://github.com/GerbenJavado/LinkFinder.git
 	cd LinkFinder
 	python setup.py install
+	cd ..
+	git clone https://github.com/m4ll0k/Bug-Bounty-Toolz
+	git clone https://github.com/tomnomnom/hacks
+	cd hacks/anti-burl/
+	go build main.go
+	sudo mv main ~/go/bin/anti-burl
+	cd ..
+	git clone https://github.com/1ndianl33t/Gf-Patterns
+	mkdir ~/.gf
+	cp -r Gf-Patterns/* ~/.gf
 	cd ..
 	cd ..
 
@@ -123,193 +139,10 @@ installation(){
 	#Install Gf
 	go get -u github.com/tomnomnom/gf
 	echo 'source $GOPATH/src/github.com/tomnomnom/gf/gf-completion.bash' >> ~/.bashrc
-	mkdir ~/.gf
 	cp -r $GOPATH/src/github.com/tomnomnom/gf/examples ~/.gf
-	cd ~/.gf
-	touch sqli.json
-	echo -e "{
-	    "flags": "-iE",
-	     "patterns": [
-		 "id=",
-		"select=",
-		"report=",
-		"role=",
-		"update=",
-		"query=",
-		"user=",
-		"name=",
-		"sort=",
-		"where=",
-		"search=",
-		"params=",
-		"process=",
-		"row=",
-		"view=",
-		"table=",
-		"from=",
-		"sel=",
-		"results=",
-		"sleep=",
-		"fetch=",
-		"order=",
-		"keyword=",
-		"column=",
-		"field=",
-		"delete=",
-		"string=",
-		"number=",
-		"filter="
-	]
-	}" >> sqli.json
-	
-	touch redirect.json
-	echo -e "{
-	    	"flags": "-iE",
-	        "patterns": [
-		"Lmage_url=",
-		"Open=",
-		"callback=",
-		"cgi-bin/redirect.cgi",
-		"cgi-bin/redirect.cgi?",
-		"checkout=",
-		"checkout_url=",
-		"continue=",
-		"data=",
-		"dest=",
-		"destination=",
-		"dir=",
-		"domain=",
-		"feed=",
-		"file=",
-		"file_name=",
-		"file_url=",
-		"folder=",
-		"folder_url=",
-		"forward=",
-		"from_url=",
-		"go=",
-		"goto=",
-		"host=",
-		"html=",
-		"image_url=",
-		"img_url=",
-		"load_file=",
-		"load_url=",
-		"login?to=",
-		"login_url=",
-		"logout=",
-		"navigation=",
-		"next=",
-		"next_page=",
-		"out=",
-		"page=",
-		"page_url=",
-		"path=",
-		"port=",
-		"redir=",
-		"redirect=",
-		"redirect_to=",
-		"redirect_uri=",
-		"redirect_url=",
-		"reference=",
-		"return=",
-		"returnTo=",
-		"return_path=",
-		"return_to=",
-		"return_url=",
-		"rt=",
-		"rurl=",
-		"show=",
-		"site=",
-		"target=",
-		"to=",
-		"uri=",
-		"url=",
-		"val=",
-		"validate=",
-		"view=",
-		"window="
-		]
-		}" >> redirect.json
 
-	touch ssrf.json
-
-	echo -e "{
-	         "flags": "-iE",
-	        "patterns": [
-		"access=", 
-		"admin=", 
-		"dbg=", 
-		"debug=", 
-		"edit=", 
-		"grant=", 
-		"test=", 
-		"alter=", 
-		"clone=", 
-		"create=", 
-		"delete=", 
-		"disable=", 
-		"enable=", 
-		"exec=", 
-		"execute=", 
-		"load=", 
-		"make=", 
-		"modify=", 
-		"rename=", 
-		"reset=", 
-		"shell=", 
-		"toggle=", 
-		"adm=", 
-		"root=", 
-		"cfg=",
-		"dest=", 
-		"redirect=", 
-		"uri=", 
-		"path=", 
-		"continue=", 
-		"url=", 
-		"window=", 
-		"next=", 
-		"data=", 
-		"reference=", 
-		"site=", 
-		"html=", 
-		"val=", 
-		"validate=", 
-		"domain=", 
-		"callback=", 
-		"return=", 
-		"page=", 
-		"feed=", 
-		"host=", 
-		"port=", 
-		"to=", 
-		"out=",
-		"view=", 
-		"dir=", 
-		"show=", 
-		"navigation=", 
-		"open=",
-		"file=",
-		"document=",
-		"folder=",
-		"pg=",
-		"php_path=",
-		"style=",
-		"doc=",
-		"img=",
-		"filename="
-
-		]
-		}" >> ssrf.json
-	cd ..
-	
-	#Install Findomain
-	cd Tools
-	wget https://github.com/Edu4rdSHL/findomain/releases/latest/download/findomain-linux
-	chmod +x findomain-linux
-	./findomain-linux
-	cd ..
+	#Insatll Rush
+	go get -u github.com/shenwei356/rush/
 }
 
 ##############################################
@@ -512,7 +345,7 @@ vulnerabilities_nuclei(){
 	echo -e "[+] Using Nuclei to search for vulnerabilities "
 	printf "${NORMAL}"	
 	
-	nuclei -l $domains -t $toolsPath/nuclei-templates -o nuclei.txt
+	nuclei -update-templates -l $domains -t $toolsPath/nuclei-templates -o nuclei.txt
 }
 ##############################################
 #####COMMON VULNERABILITIES FUNCTIONS#########
@@ -583,12 +416,21 @@ vulnerabilities(){
 	printf "${NORMAL}"
 
 	cat $domainsAux2 | html-tool comments | grep -oE '\b(https?|http)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]' > urls.txt
+
+	if [ ! -s urls.txt ] ; then
+		printf "${YELLOW}"
+		echo "[X] No URLs found"
+		printf "${NORMAL}"
+		rm urls.txt 
+		cd ..
+		rm -Rf comments
+	else
+		printf "${YELLOW}"
+		echo "[✓] URLs found!"
+		printf "${NORMAL}"
+		cd ..
+	fi
 	
-	printf "${YELLOW}"
-	echo "[+] Success"
-	printf "${NORMAL}"
-	
-	cd ..
 
 	#Search Open Redirect
 	if [ -d open_redirect ]; then rm -Rf open_redirect; fi
@@ -602,7 +444,19 @@ vulnerabilities(){
 
 	cat $domainsAux2  | waybackurls | httpx -silent -timeout 2 -threads 100 | gf redirect | anew | qsreplace google.com | urlprobe -c 1000 -t 05 | tee -a openredirect.txt
 
-	cd ..
+	if [ ! -s openredirect.txt ] ; then
+		printf "${YELLOW}"
+		echo "[X] No Open Redirects found"
+		printf "${NORMAL}"
+		rm openredirect.txt 
+		cd ..
+		rm -Rf open_redirect
+	else
+		printf "${YELLOW}"
+		echo "[✓] Open Redirects found!"
+		printf "${NORMAL}"
+		cd ..
+	fi
 
 	#Search param XSS
 	echo -e ""
@@ -622,6 +476,7 @@ vulnerabilities(){
 		printf "${NORMAL}"
 		echo "Searching XSS parameters to " $x
 		echo $x | waybackurls | kxss | tee -a $NAMEEXTENSION
+
 		if [ ! -s $NAMEEXTENSION ] ; then
 			echo "[X] No XSS parameters found"
 			rm $NAMEEXTENSION
@@ -658,7 +513,19 @@ vulnerabilities(){
 	
 	cat $domainsAux2  | httpx -silent -status-code | grep 200 | cut -d [ -f1 | tee targets.txt | waybackurls | gf ssrf | tee -a ssrf.txt
 
-	cd ..
+	if [ ! -s ssrf.txt ] ; then
+		printf "${YELLOW}"
+		echo "[X] No SSRF found"
+		printf "${NORMAL}"
+		rm ssrf.txt 
+		cd ..
+		rm -Rf SSRF
+	else
+		printf "${YELLOW}"
+		echo "[✓] SSRF found!"
+		printf "${NORMAL}"
+		cd ..
+	fi
 
 	# Check CORS missconfigurations
 	echo -e ""
@@ -668,10 +535,10 @@ vulnerabilities(){
 	python3 $toolsPath/Corsy/corsy.py -i $domains -o CORS.txt
 
 	#File and directories scan
-	files_list_domains $domainsAux2
+	files_list_domains $domainsAux3
 
 	#Analyzing JS files
-	javascript_list_domains $domainsAux2
+	javascript_list_domains $domainsAux3
 	
 	cd ..
 }
@@ -699,9 +566,22 @@ javascript_domain(){
 	printf "${YELLOW}"
 	echo -e "Analyzing JS files for endpoints, API Keys and many more to" $1
 	printf "${NORMAL}"
+	
+	echo $domainName | gau |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> gauJS.txt 
+	echo $domainName | waybackurls | grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> waybackJS.txt 
+	gospider -a -S $domainName -d 2 | grep -Eo "(http|https)://[^/\"].*\.js+" | sed "s#\] \- #\n#g" >> gospiderJS.txt 
+	cat gauJS.txt waybackJS.txt gospiderJS.txt | sort -u >> allJS 
+        rm -rf *.txt
+	cat allJS | anti-burl |awk '{print $4}' | sort -u >> aliveJs.txt 
+	xargs -a aliveJs.txt -n 2 -I@ bash -c "echo -e '\n[URL]: @\n'; python3 ~/Tools/LinkFinder/linkfinder.py -i @ -o cli" >> outputLinkFinder.txt
+	cat outputLinkFinder.txt | python3 ~/Tools/Bug-Bounty-Toolz/collector.py JSData
+	rush -i aliveJs.txt 'python3 ~/Tools/secretfinder/SecretFinder.py -i {} -o cli | sort -u > JSData/secretfinder'
 
-	python3 $toolsPath/LinkFinder/linkfinder.py -i $domainName -o cli >> "endpoints_$1.txt"
-	python3 $toolsPath/secretfinder/SecretFinder.py -i $domainName -o cli >> "keys_$1.txt"
+	find . -type f -empty -delete
+
+	if [ -z "$(ls -A JSData)" ]; then
+		rmdir JSData
+	fi
 
 	printf "${YELLOW}"
 	echo -e "[✓] Finished scanning of JS files for" $1
@@ -714,24 +594,39 @@ javascript_list_domains(){
 	if [ -d JS ]; then rm -Rf JS; fi
 	mkdir JS
 	cd JS
-
+	
 	for domain in $(cat $1)
-	do	
-		EXTENSION=".txt"
-		NAMEEXTENSION="$domain$EXTENSION"
-
+	do
 		printf "${YELLOW}"
 		echo -e "Analyzing JS files for endpoints, API Keys and many more to" $domain
 		printf "${NORMAL}"
 
-		domainName="https://"$domain
+		mkdir $domain
+		cd $domain
+		echo $domain | gau |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> gauJS.txt 
+		echo $domain | waybackurls | grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> waybackJS.txt 
+		gospider -a -S $domain -d 2 | grep -Eo "(http|https)://[^/\"].*\.js+" | sed "s#\] \- #\n#g" >> gospiderJS.txt 
+		cat gauJS.txt waybackJS.txt gospiderJS.txt | sort -u >> allJS
+		rm -rf *.txt
+		cat allJS | anti-burl |awk '{print $4}' | sort -u >> aliveJs.txt 
+		xargs -a aliveJs.txt -n 2 -I@ bash -c "echo -e '\n[URL]: @\n'; python3 ~/Tools/LinkFinder/linkfinder.py -i @ -o cli" >> outputLinkFinder.txt
+		cat outputLinkFinder.txt | python3 ~/Tools/Bug-Bounty-Toolz/collector.py JSData 
+		rush -i aliveJs.txt 'python3 ~/Tools/secretfinder/SecretFinder.py -i {} -o cli | sort -u > JSData/secretfinder'
 
-		python3 $toolsPath/LinkFinder/linkfinder.py -i $domainName -o cli >> "endpoints_$NAMEEXTENSION"
-		python3 $toolsPath/secretfinder/SecretFinder.py -i $domainName -o cli >> "keys_$NAMEEXTENSION"
+		find . -type f -empty -delete
+
+		if [ -z "$(ls -A JSData)" ]; then
+			rmdir JSData
+		fi
+
+		cd ..
+		
+		find . -empty -type d -delete
 
 		printf "${YELLOW}"
 		echo -e "[✓] Finished scanning of JS files for" $domain
 		printf "${NORMAL}"
+		echo ""
 	done
 
 	cd ..
@@ -784,7 +679,7 @@ files_domain(){
 	cd directories
 	
 	domain=$(echo $1 | awk -F/ '{print $3}')
-	wfuzz -c -w $gobusterDictionaryPathDir --hc 404 -f $domain $domain/FUZZ
+	wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403 -f $domain $domain/FUZZ
 	
 	cd ..
 }
@@ -808,7 +703,7 @@ files_list_domains(){
 	for domain in $(cat $1)
 	do	
 		domainName="https://"$domain
-		wfuzz -c -w $gobusterDictionaryPathDir --hc 404 -f $domain $domainName/FUZZ
+		wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403 -f $domain $domainName/FUZZ
 	done
 
 	cd ..
@@ -831,7 +726,6 @@ spoof_check(){
 	python $toolsPath/spoofcheck/spoofcheck.py $1 >> "spoofcheck_$1.txt"
 	
 	cd ..
-	
 }
 
 all_in_one(){
