@@ -3,11 +3,12 @@
 #########CONFIGURATION#########
 #PARAMETERS
 gobusterDNSThreads=50
-gobusterDictionaryPath=/home/kali/Tools/SecLists/Discovery/DNS/namelist.txt
+gobusterDictionaryPath=YOUR DICTIONARY PATH
 aquatoneTimeout=50000
 gobusterDirThreads=50
-gobusterDictionaryPathDir=/home/kali/manteca.txt
+gobusterDictionaryPathDir=YOUR DICTIONARY PATH
 testsslParameters="--quiet --fast -p -s -S -h -U --color 3 --htmlfile"
+wfuzzCodesExceptions=404,301,403,400,401
 toolsPath=/home/kali/Tools
 
 #COLORS
@@ -679,7 +680,7 @@ files_domain(){
 	cd directories
 	
 	domain=$(echo $1 | awk -F/ '{print $3}')
-	wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403,400,401 -f $domain $domain/FUZZ
+	wfuzz -c -w $gobusterDictionaryPathDir --hc $wfuzzCodesExceptions -f $domain $domain/FUZZ
 	
 	cd ..
 }
@@ -703,7 +704,7 @@ files_list_domains(){
 	for domain in $(cat $1)
 	do	
 		domainName="https://"$domain
-		wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403,400,401 -f $domain $domainName/FUZZ
+		wfuzz -c -w $gobusterDictionaryPathDir --hc $wfuzzCodesExceptions -f $domain $domainName/FUZZ
 	done
 
 	cd ..
