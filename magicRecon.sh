@@ -6,7 +6,7 @@ gobusterDNSThreads=50
 gobusterDictionaryPath=/home/kali/Tools/SecLists/Discovery/DNS/namelist.txt
 aquatoneTimeout=50000
 gobusterDirThreads=50
-gobusterDictionaryPathDir=/home/kali/Tools/SecLists/Discovery/Web-Content/raft-medium-files.txt
+gobusterDictionaryPathDir=/home/kali/manteca.txt
 testsslParameters="--quiet --fast -p -s -S -h -U --color 3 --htmlfile"
 toolsPath=/home/kali/Tools
 
@@ -618,16 +618,16 @@ javascript_list_domains(){
 		if [ -z "$(ls -A JSData)" ]; then
 			rmdir JSData
 		fi
-
-		cd ..
 		
-		find . -empty -type d -delete
+		cd ..
 
 		printf "${YELLOW}"
 		echo -e "[✓] Finished scanning of JS files for" $domain
 		printf "${NORMAL}"
 		echo ""
 	done
+
+	find . -empty -type d -delete
 
 	cd ..
 }
@@ -679,7 +679,7 @@ files_domain(){
 	cd directories
 	
 	domain=$(echo $1 | awk -F/ '{print $3}')
-	wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403 -f $domain $domain/FUZZ
+	wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403,400,401 -f $domain $domain/FUZZ
 	
 	cd ..
 }
@@ -703,7 +703,7 @@ files_list_domains(){
 	for domain in $(cat $1)
 	do	
 		domainName="https://"$domain
-		wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403 -f $domain $domainName/FUZZ
+		wfuzz -c -w $gobusterDictionaryPathDir --hc 404,301,403,400,401 -f $domain $domainName/FUZZ
 	done
 
 	cd ..
