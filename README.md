@@ -95,7 +95,7 @@ Choose a option:
 * [@NahamSec](https://twitter.com/NahamSec)
 * [@s0md3v](https://twitter.com/s0md3v)
 * [@ofjaaah](https://twitter.com/ofjaaah)
-* [@@KingOfBugbounty](https://twitter.com/KingOfBugbounty)
+* [@KingOfBugbounty](https://twitter.com/KingOfBugbounty)
 
 # About me
 [Twitter](https://twitter.com/robotshelld)
