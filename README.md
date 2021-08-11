@@ -44,38 +44,6 @@ With Magic Recon you can perform passive and active reconnaissance, vulnerabilit
 
 -------------------------------------
 
-# Features
-To run the project, you will need to install the following tools:
-* [Subfinder](https://github.com/projectdiscovery/subfinder)
-* [Httpx](https://github.com/projectdiscovery/httpx)
-* [Notify](https://github.com/projectdiscovery/notify)
-* [Nuclei](https://github.com/projectdiscovery/nuclei)
-* [Nuclei-templates](https://github.com/projectdiscovery/nuclei-templates)
-* [SecLists](https://github.com/danielmiessler/SecLists)
-* [Corsy](https://github.com/s0md3v/Corsy)
-* [Securityheaders](https://github.com/koenbuyens/securityheaders)
-* [Ssl-checker](https://github.com/narbehaj/ssl-checker)
-* [Secretfinder](https://github.com/m4ll0k/SecretFinder)
-* [Wfuzz](https://github.com/xmendez/wfuzz)
-* [Aquatone](https://github.com/michenriksen/aquatone)
-* [Html-tool](https://github.com/tomnomnom/hacks/tree/master/html-tool)
-* [Waybackurls](https://github.com/tomnomnom/waybackurls)
-* [Kxss](https://github.com/Emoe/kxss)
-* [Anew](https://github.com/tomnomnom/anew)
-* [Qsreplace](https://github.com/tomnomnom/qsreplace)
-* [Urlprobe](https://github.com/1ndianl33t/urlprobe)
-* [Anew](https://github.com/tomnomnom/anew)
-* [Gf](https://github.com/tomnomnom/gf)
-* [Gobuster](https://github.com/OJ/gobuster)
-* [Findomain](https://github.com/Findomain/Findomain)
-* [spoofcheck](https://github.com/BishopFox/spoofcheck)
-* [linkfiner](https://github.com/GerbenJavado/LinkFinder)
-* [Nmap](https://nmap.org/)
-
-### IMPORTANT: Remember to configure the Notify and Subfinder tools to work properly.
-
--------------------------------------
-
 # Installation :hammer:
 
 ```bash
