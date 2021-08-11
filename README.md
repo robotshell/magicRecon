@@ -131,6 +131,42 @@ EXTRA OPTIONS
 ```
 
 -------------------------------------
+# Example Usage :speak_no_evil:
+
+ All:
+ ```
+ ./magicrecon.sh -d domain.com -a
+  ```
+ Passive reconnaissance to a list of domains:
+  ```
+ ./magicrecon.sh -l domainlist.txt -p
+  ```
+ Active reconnaissance to a domain:
+  ```
+ ./magicrecon.sh -d domain.com -x
+  ```
+ 
+ Full reconnaissance:
+  ```
+ ./magicrecon.sh -d domain.com -r
+  ```
+ 
+ Full reconnaissance and vulnerabilities scanning:
+  ```
+ ./magicrecon.sh -d domain.com -r -v
+  ```
+ 
+ Full reconnaissance and vulnerabilities scanning to a wildcard:
+  ```
+ ./magicrecon.sh -w domain.com 
+  ```
+ 
+ Massive reconnaissance and vulnerabilities scanning:
+  ```
+ ./magicrecon.sh -w domain.com -m 
+  ```
+
+-------------------------------------
 
 # Sample video: passive reconnaissance :movie_camera:
 
