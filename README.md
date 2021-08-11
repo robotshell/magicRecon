@@ -96,6 +96,32 @@ It is also important to correctly configure tools such as `Subfinder` and `Notif
 -------------------------------------
 
 # Usage :eyes:
+**TARGET OPTIONS**
+ 
+| Parameter | Description |
+|------|-------------|
+| -d | Target domain |
+| -w | Wildcard domain |
+| -l | target list  |
+ 
+**MODE OPTIONS**
+ 
+| Parameter | Description |
+|------|-------------|
+| -a, --all | All mode - Full scan with full target recognition and vulnerability scanning |
+| -p, --passive | Passive reconnaissance (Footprinting) - Performs only passive recon with multiple tools |
+| -x, --active | Active reconnaissance (Fingerprinting) - Performs only active recon with multiple tools |
+| -r, --recon | Reconnaissance - Perform active and passive reconnaissance |
+| -v, --vulnerabilities | Vulnerabilities - Check multiple vulnerabilities in the domain/list domains |
+| -m, --massive | Massive recon - Massive vulnerability analysis with repetitions every X seconds |
+ 
+**EXTRA OPTIONS**
+ 
+| Parameter | Description |
+|------|-------------|
+| -n, --notify | Notify - This option is used to receive notifications via Discord, Telegram or Slack |
+| -h, --help | Help - Show help |
+
 ```
 ./magicrecon.sh -h                 
  __  __             _      ____                      
