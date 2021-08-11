@@ -102,7 +102,7 @@ It is also important to correctly configure tools such as `Subfinder` and `Notif
 |------|-------------|
 | -d | Target domain |
 | -w | Wildcard domain |
-| -l | target list  |
+| -l | Target list  |
  
 **MODE OPTIONS**
  
@@ -121,6 +121,8 @@ It is also important to correctly configure tools such as `Subfinder` and `Notif
 |------|-------------|
 | -n, --notify | Notify - This option is used to receive notifications via Discord, Telegram or Slack |
 | -h, --help | Help - Show help |
+
+
 
 ```
 ./magicrecon.sh -h                 
