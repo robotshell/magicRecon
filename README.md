@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/robotshell/magicRecon"><img src="https://github.com/robotshell/magicReconDev/blob/main/images/logo.png" alt="magicRecon"></a>
+  <a href="https://github.com/robotshell/magicRecon"><img src="https://github.com/robotshell/magicRecon/blob/main/images/logo.png" alt="magicRecon"></a>
   <br>
   MagicRecon
   <br>
@@ -134,7 +134,7 @@ EXTRA OPTIONS
 
 # Sample video: passive reconnaissance :movie_camera:
 
-![Example image](https://github.com/robotshell/magicReconDev/blob/main/images/poc.gif)
+![Example image](https://github.com/robotshell/magicRecon/blob/main/images/poc.gif)
 
 -------------------------------------
 
