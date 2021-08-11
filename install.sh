@@ -29,8 +29,26 @@ source ~/.bashrc
 
 printf "${BOLD}${MAGENTA}Installing repositories\n${NORMAL}"
 cd $HOME
-mkdir Tools
-cd Tools
+mkdir tools
+cd tools
+
+printf "${CYAN}Cloning ssl-checker\n${NORMAL}"
+git clone https://github.com/narbehaj/ssl-checker
+cd ssl-checker
+pip3 install -r requirements.txt
+cd ..
+
+printf "${CYAN}Cloning CloudEnum\n${NORMAL}"
+git clone https://github.com/initstring/cloud_enum
+cd cloud_enum
+pip3 install -r requirements.txt
+cd ..
+
+printf "${CYAN}Cloning GitDorker\n${NORMAL}"
+git clone https://github.com/obheda12/GitDorker
+cd GitDorker
+pip3 install -r requirements.txt
+cd ..
 
 printf "${CYAN}Cloning nuclei-templates\n${NORMAL}"
 git clone https://github.com/projectdiscovery/nuclei-templates.git
@@ -44,38 +62,21 @@ cd Corsy
 pip3 install requests
 cd ..	
 
-printf "${CYAN}Cloning securityheaders\n${NORMAL}"
-git clone https://github.com/koenbuyens/securityheaders.git
-cd securityheaders
-pip install -r requirements.txt
-cd ..
-
-printf "${CYAN}Cloning ssl-checker\n${NORMAL}"
-git clone https://github.com/narbehaj/ssl-checker
-cd ssl-checker
-pip3 install -r requirements.txt
-cd ..
-	
-printf "${CYAN}Cloning secretfinder\n${NORMAL}"
+printf "${CYAN}Cloning SecretFinder\n${NORMAL}"
 git clone https://github.com/m4ll0k/SecretFinder.git secretfinder
 cd secretfinder
 pip install -r requirements.txt
 cd ..
 
-printf "${CYAN}Cloning spoofcheck\n${NORMAL}"
-git clone https://github.com/BishopFox/spoofcheck
-cd spoofcheck
-pip install -r requirements.txt
+printf "${CYAN}Cloning CMSeek\n${NORMAL}"
+git clone https://github.com/Tuhinshubhra/CMSeeK
+cd CMSeeK
+pip3 install -r requirements.txt
 cd ..
 
-printf "${CYAN}Cloning LinkFinder\n${NORMAL}"
-git clone https://github.com/GerbenJavado/LinkFinder.git
-cd LinkFinder
-python setup.py install
-cd ..
-
-printf "${CYAN}Cloning Bug-Bounty-Toolz\n${NORMAL}"
-git clone https://github.com/m4ll0k/Bug-Bounty-Toolz
+printf "${CYAN}Cloning Findomain\n${NORMAL}"
+wget https://github.com/findomain/findomain/releases/latest/download/findomain-linux
+hmod +x findomain-linux
 
 printf "${CYAN}Cloning anti-burl\n${NORMAL}"
 git clone https://github.com/tomnomnom/hacks
@@ -90,59 +91,84 @@ mkdir ~/.gf
 cp -r Gf-Patterns/* ~/.gf
 cd ..
 cd ..
+
 	
 printf "${BOLD}${MAGENTA}Installing tools\n${NORMAL}"
 
-printf "${CYAN}Installing Gosipder\n${NORMAL}"
-sudo apt install gospider 
+printf "${CYAN}Installing WhatWeb\n\n${NORMAL}"
+sudo apt-get install whatweb
 
-printf "${CYAN}Installing Subfinder\n${NORMAL}"
-GO111MODULE=on go get -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+printf "${CYAN}Installing TheHarvester\n\n${NORMAL}"
+sudo apt-get install theharvester
 
-printf "${CYAN}Installing HTTPX\n${NORMAL}"
-GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx
+printf "${CYAN}Installing Nmap\n\n${NORMAL}"
+sudo apt-get install nmap
 
-printf "${CYAN}Installing Notify\n${NORMAL}"
-GO111MODULE=on go get -v github.com/projectdiscovery/notify/cmd/notify
+printf "${CYAN}Installing Dirsearch\n\n${NORMAL}"
+sudo apt-get install dirsearch
 
-printf "${CYAN}Installing Nuclei\n${NORMAL}"
-GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+printf "${CYAN}Installing SqlMap\n\n${NORMAL}"
+sudo apt-get install sqlmap 
 
-printf "${CYAN}Installing gau\n${NORMAL}"
-GO111MODULE=on go get -u -v github.com/lc/gau
-
-printf "${CYAN}Installing GoBuster\n${NORMAL}"
-go get github.com/OJ/gobuster
-
-printf "${CYAN}Installing Wfuzz\n${NORMAL}"
-pip install wfuzz
+printf "${CYAN}Installing Amass\n${NORMAL}"
+go get -v github.com/OWASP/Amass/v3/..
+sudo cp ~/go/bin/amass /usr/local/bin 
 
 printf "${CYAN}Installing Aquatone\n${NORMAL}"
 go get -u github.com/michenriksen/aquatone
+sudo cp ~/go/bin/aquatone /usr/local/bin 
 
-printf "${CYAN}Installing html-tool\n${NORMAL}"
-go get -u github.com/tomnomnom/hacks/html-tool
-
-printf "${CYAN}Installing waybackurls\n${NORMAL}"
-go get github.com/tomnomnom/waybackurls
-
-printf "${CYAN}Installing kxss\n${NORMAL}"
-go get github.com/Emoe/kxss
+printf "${CYAN}Installing Subfinder\n${NORMAL}"
+GO111MODULE=on go get -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+sudo cp ~/go/bin/subfinder /usr/local/bin 
 
 printf "${CYAN}Installing anew\n${NORMAL}"
 go get -u github.com/tomnomnom/anew
+sudo cp ~/go/bin/anew /usr/local/bin 
 
-printf "${CYAN}Installing qsreplace\n${NORMAL}"
-go get -u github.com/tomnomnom/qsreplace
+printf "${CYAN}Installing HTTPX\n${NORMAL}"
+GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx
+sudo cp ~/go/bin/httpx /usr/local/bin
 
-printf "${CYAN}Installing urlprobe\n${NORMAL}"
-go get -u github.com/1ndianl33t/urlprobe
+printf "${CYAN}Installing Notify\n${NORMAL}"
+GO111MODULE=on go get -v github.com/projectdiscovery/notify/cmd/notify
+sudo cp ~/go/bin/notify /usr/local/bin
+
+printf "${CYAN}Installing Nuclei\n${NORMAL}"
+GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
+sudo cp ~/go/bin/nuclei /usr/local/bin
+
+printf "${CYAN}Installing Shcheck\n${NORMAL}"
+pip3 install shcheck
+
+printf "${CYAN}Installing MailSpoof\n${NORMAL}"
+pip3 install mailspoof
+
+printf "${CYAN}Installing MailSpoof\n${NORMAL}"
+go get github.com/haccer/subjack
+sudo cp ~/go/bin/subjack /usr/local/bin
+
+printf "${CYAN}Installing gau\n${NORMAL}"
+GO111MODULE=on go get -u -v github.com/lc/gau
+sudo cp ~/go/bin/gau /usr/local/bin
 
 printf "${CYAN}Installing gf\n${NORMAL}"
 go get -u github.com/tomnomnom/gf
 echo 'source $GOPATH/src/github.com/tomnomnom/gf/gf-completion.bash' >> ~/.bashrc
 cp -r $GOPATH/src/github.com/tomnomnom/gf/examples ~/.gf
+sudo cp ~/go/bin/gf /usr/local/bin
 
-printf "${CYAN}Installing rush\n${NORMAL}"
-go get -u github.com/shenwei356/rush/
+printf "${CYAN}Installing qsreplace\n${NORMAL}"
+go get -u github.com/tomnomnom/qsreplace
+sudo cp ~/go/bin/qsreplace /usr/local/bin
 
+printf "${CYAN}Installing Dalfox\n${NORMAL}"
+GO111MODULE=on go get -v github.com/hahwul/dalfox/v2
+sudo cp ~/go/bin/dalfox /usr/local/bin
+
+printf "${CYAN}Installing html-tool\n${NORMAL}"
+go get -u github.com/tomnomnom/hacks/html-tool
+sudo cp ~/go/bin/html-tool /usr/local/bin
+
+printf "${CYAN}Installing waybackurls\n${NORMAL}"
+go get github.com/tomnomnom/waybackurls
