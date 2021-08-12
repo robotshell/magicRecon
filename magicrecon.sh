@@ -221,6 +221,8 @@ vulnerabilities(){
 	printf "\n"
 	printf "${NORMAL}${CYAN}Checking if the entry points are vulnerable...${NORMAL}\n\n"
 	cat or_urls.txt | qsreplace "https://google.com" | httpx -silent -status-code -location
+	cat or_urls.txt | qsreplace "//google.com/" | httpx -silent -status-code -location
+	cat or_urls.txt | qsreplace "//\google.com" | httpx -silent -status-code -location
 	
 	printf "\n${GREEN}[+] Vulnerability: XSS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find XSS vulnerabilities...${NORMAL}\n\n"
@@ -236,7 +238,7 @@ vulnerabilities(){
 	printf "\n${GREEN}[+] Vulnerability: SSRF${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find SSRF vulnerabilities...${NORMAL}\n\n"
 	printf "${RED}[!] Remember to enter your Burp Collaborator link in the configuration.cfg file \n\n${NORMAL}"
-	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace http://requestbin.net/r/2n3w5n78
+	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace $burpCollaborator
 
 	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"	
