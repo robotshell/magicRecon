@@ -240,7 +240,7 @@ vulnerabilities(){
 
 	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"	
-	gau -subs levantina.com |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >&gt | tee js.txt 
+	gau -subs $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >&gt | tee js.txt 
 	cat js.txt | xargs -I@ sh -c 'python3 http://SecretFinder.py -i @' | tee secrefinder.txt
 	printf "\n"
 	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
@@ -248,7 +248,7 @@ vulnerabilities(){
 	
 	printf "\n${GREEN}[+] Vulnerability: Multiples vulnerabilities${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Running multiple templates to discover vulnerabilities...${NORMAL}\n\n"
-	nuclei -u levantina.com -t ~/tools/nuclei-templates/ -severity low,medium,high,critical -silent -o mutiple_vulnerabilities.txt
+	nuclei -u $domain -t ~/tools/nuclei-templates/ -severity low,medium,high,critical -silent -o mutiple_vulnerabilities.txt
 	
 	printf "\n${GREEN}[+] Vulnerability: CMS Vulnerabilities${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Checking if the domain is a CMS and contains vulnerabilities...${NORMAL}\n\n"
