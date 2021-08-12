@@ -176,7 +176,6 @@ EXTRA OPTIONS
 You can contribute in following ways:
 
 - [Report bugs & add issues](https://github.com/robotshell/magicRecon/issues)
-- Searching for new tools to add
 - Give suggestions **(Ideas)** to make it better
 
 Do you want to have a conversation in private? email me : robotshelld@gmail.com
