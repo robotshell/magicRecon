@@ -206,9 +206,9 @@ Do you want to have a conversation in private? email me : robotshelld@gmail.com
 * If you've earned a bug bounty using this tool, please consider donating to support it's development. You can help me to develop more useful scripts and tools. Thanks :heart_eyes:
 <p align="center">
   <a href="https://www.buymeacoffee.com/robotshell" target="_blank">
-    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 200px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" >
+    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee">
   </a>
     <a href="https://www.paypal.com/paypalme/robotshell" target="_blank">
-      <img src="https://www.paypalobjects.com/digitalassets/c/website/marketing/apac/C2/logos-buttons/optimize/34_Blue_PayPal_Pill_Button.png" alt="PayPal" style="height:50px;width:200px">
+      <img src="https://www.paypalobjects.com/digitalassets/c/website/marketing/apac/C2/logos-buttons/optimize/34_Blue_PayPal_Pill_Button.png" alt="PayPal">
   </a>
 </p>
