@@ -230,7 +230,7 @@ vulnerabilities(){
 
 	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"	
-	gau $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >&gt | tee js.txt 
+	gau $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' | tee js.txt 
 	cat js.txt | xargs -I@ sh -c 'python3 ~/tools/SecretFinder/SecretFinder.py -i @' | tee secrefinder.txt
 	printf "\n"
 	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
