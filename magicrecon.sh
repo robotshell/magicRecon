@@ -223,17 +223,6 @@ vulnerabilities(){
 	cat or_urls.txt | qsreplace "//google.com/" | httpx -silent -status-code -location
 	cat or_urls.txt | qsreplace "//\google.com" | httpx -silent -status-code -location
 	
-	printf "\n${GREEN}[+] Vulnerability: XSS${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Trying to find XSS vulnerabilities...${NORMAL}\n\n"
-	gau $domain | gf xss | sed 's/=.*/=/' | sed 's/URL: //' | dalfox pipe -o xss.txt
-	
-	printf "\n${GREEN}[+] Vulnerability: SQLi${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Finding SQLi entry points in the domain...${NORMAL}\n\n"
-	gau $domain | gf sqli | tee sqli_paramaters.txt
-	printf "\n"
-	printf "${NORMAL}${CYAN}Checking if the entry points are vulnerable...${NORMAL}\n\n"
-	sqlmap -m sqli --batch --random-agent --level 1
-	
 	printf "\n${GREEN}[+] Vulnerability: SSRF${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find SSRF vulnerabilities...${NORMAL}\n\n"
 	printf "${RED}[!] Remember to enter your Burp Collaborator link in the configuration.cfg file \n\n${NORMAL}"
@@ -246,6 +235,17 @@ vulnerabilities(){
 	printf "\n"
 	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
 	cat js.txt | grep -aoP "(?<=(\"|\'|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\`))" | sort -u | tee endpoints.txt
+	
+	printf "\n${GREEN}[+] Vulnerability: XSS${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Trying to find XSS vulnerabilities...${NORMAL}\n\n"
+	gau $domain | gf xss | sed 's/=.*/=/' | sed 's/URL: //' | dalfox pipe -o xss.txt
+	
+	printf "\n${GREEN}[+] Vulnerability: SQLi${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Finding SQLi entry points in the domain...${NORMAL}\n\n"
+	gau $domain | gf sqli | tee sqli_paramaters.txt
+	printf "\n"
+	printf "${NORMAL}${CYAN}Checking if the entry points are vulnerable...${NORMAL}\n\n"
+	sqlmap -m sqli_paramaters.txt --batch --random-agent --level 1
 	
 	printf "\n${GREEN}[+] Vulnerability: Multiples vulnerabilities${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Running multiple templates to discover vulnerabilities...${NORMAL}\n\n"
