@@ -199,6 +199,16 @@ EXTRA OPTIONS
 
 -------------------------------------
 
+# To do :mage_man:
+- [x] Change tool operation to parameters.
+- [ ] Improve the use of Notify.  
+- [ ] Add new interesting tools to find more vulnerabilities.
+- [ ] Save results in other formats.
+- [ ] Save the results in a document as a report.
+- [ ] Check if the emails found by the tool are leaked. 
+- [ ] Integrate RobotScraper.
+
+-------------------------------------
 
 # Contribution & License :family:
 
