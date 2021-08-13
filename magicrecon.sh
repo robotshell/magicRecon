@@ -229,9 +229,10 @@ vulnerabilities(){
 	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace $burpCollaborator
 
 	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"	
+	printf "${NORMAL}${CYAN}Obtaining all the JavaScript files of the domain ...${NORMAL}\n\n"	
 	gau $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' | tee js.txt 
-	cat js.txt | xargs -I@ sh -c 'python3 ~/tools/SecretFinder/SecretFinder.py -i @' | tee secrefinder.txt
+	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"
+	python3 ~/tools/SecretFinder/SecretFinder.py --input js.txt -o cli | tee secrefinder.txt
 	printf "\n"
 	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
 	cat js.txt | grep -aoP "(?<=(\"|\'|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\`))" | sort -u | tee endpoints.txt
