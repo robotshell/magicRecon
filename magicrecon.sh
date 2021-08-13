@@ -166,8 +166,7 @@ massive_recon(){
 	
 	while true; 
 	do
-		subfinder -d $wildcard | anew subdomains.txt | httpx | nuclei -t ~/tools/nuclei-templates/ -ut | notify ; sleep $massiveTime; 
-		
+		subfinder -d $wildcard | anew subdomains.txt | httpx | nuclei -t ~/tools/nuclei-templates/ | notify ; sleep $massiveTime; 		
 		printf "${NORMAL}${CYAN}[+] The vulnerabilities found have been notified. Waiting $massiveTime seconds for the new scan.${NORMAL}\n\n"
 	done
 	
