@@ -2,7 +2,7 @@
   <br>
   <a href="https://github.com/robotshell/magicRecon"><img src="https://github.com/robotshell/magicRecon/blob/master/images/logo.png" alt="magicRecon"></a>
   <br>
-  MagicRecon
+  MagicRecon, Fast, Simple and effective 
   <br>
 </h1>
 
@@ -41,6 +41,35 @@ With Magic Recon you can perform passive and active reconnaissance, vulnerabilit
 # Disclaimer :warning:
 **The author of this document take no responsibility for correctness. This project is merely here to help guide security researchers towards determining whether something is vulnerable or not, but does not guarantee accuracy.**
 **Warning: This code was originally created for personal use, it generates a substantial amount of traffic, please use with caution.**
+
+-------------------------------------
+
+# Main features :boom: 
+- Save the results in an organized way in different formats.
+- Subdomain enumeration.
+- Check if the domains are alive.
+- Get whois information about every subdomain.
+- Get dns information about every subdomain.
+- Extract the technologies used in the domain.
+- Get information about the certificate used in the domain .
+- Take a screenshot on the domain.
+- Searches for emails on the domain, users and more things.
+- Enumerate public resources in AWS, Azure, and Google Cloud. 
+- Search juicy information via GitHub Dorks.
+- Perform a port scan to discover open ports. 
+- Perform a dirsearch to find directories and files.
+- Perform a massive recon and vulnerability scan via Nuclei every X seconds.
+- Search missing security headers.
+- Check if the domain is vulnerable to Email spoofing.
+- Check if the domain is vulnerable to Subdomain takeover.
+- Check if the domain is vulnerable to Cross-Origin Resource Sharing (CORS).
+- Look for entry points in the URL and check if it is vulnerable to Open Redirect.
+- Look for entry points in the URL and check if it is vulnerable to Cross-site scripting (XSS). 
+- Look for entry points in the URL and check if it is vulnerable to SQL Injection (SQLi).
+- Look for entry points in the URL and check if it is vulnerable to Server-side request forgery (SSRF).
+- Search all JS files in the domain and perform a scan for API Keys, access tokens, endpoints, etc.
+- Check if the domain use a CMS and scan it.
+- And many more...
 
 -------------------------------------
 
