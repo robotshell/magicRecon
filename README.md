@@ -2,7 +2,7 @@
   <br>
   <a href="https://github.com/robotshell/magicRecon"><img src="https://github.com/robotshell/magicRecon/blob/master/images/logo.png" alt="magicRecon"></a>
   <br>
-  MagicRecon, Fast, Simple and effective 
+  MagicRecon: Fast, Simple and effective 
   <br>
 </h1>
 
