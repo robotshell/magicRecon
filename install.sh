@@ -13,7 +13,7 @@ printf "${BOLD}${MAGENTA}Installing programming languages\n${NORMAL}"
 printf "${CYAN}Installing Python\n${NORMAL}"
 sudo apt-get install -y python3-pip
 sudo apt-get install -y python-pip
-sudo apt-get install -y python-dnspython
+sudo apt-get install -y dnspython
 
 printf "${CYAN}Installing GO\n\n${NORMAL}"
 sudo apt install -y golang
