@@ -18,7 +18,7 @@ sudo apt-get install -y dnspython
 printf "${CYAN}Installing GO\n\n${NORMAL}"
 sudo apt install -y golang
 export GOROOT=/usr/lib/go
-export GOPATH=$HOME/go
+export GOPATH=~/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 echo "export GOROOT=/usr/lib/go" >> ~/.bashrc
