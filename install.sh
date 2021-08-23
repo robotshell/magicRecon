@@ -142,7 +142,7 @@ printf "${CYAN}Installing Shcheck\n${NORMAL}"
 git clone https://github.com/santoru/shcheck
 
 printf "${CYAN}Installing MailSpoof\n${NORMAL}"
-pip3 install mailspoof
+sudo pip3 install mailspoof
 
 printf "${CYAN}Installing MailSpoof\n${NORMAL}"
 go get github.com/haccer/subjack
