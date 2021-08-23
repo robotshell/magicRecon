@@ -139,7 +139,7 @@ GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
 sudo cp ~/go/bin/nuclei /usr/local/bin
 
 printf "${CYAN}Installing Shcheck\n${NORMAL}"
-pip3 install shcheck
+git clone https://github.com/santoru/shcheck
 
 printf "${CYAN}Installing MailSpoof\n${NORMAL}"
 pip3 install mailspoof
