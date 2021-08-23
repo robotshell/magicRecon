@@ -232,7 +232,7 @@ vulnerabilities(){
 	printf "${NORMAL}${CYAN}Obtaining all the JavaScript files of the domain ...${NORMAL}\n\n"	
 	gau $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' | tee js.txt 
 	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"
-	python3 ~/tools/SecretFinder/SecretFinder.py --input js.txt -o cli | tee secrefinder.txt
+	python3 ~/tools/secretfinder/SecretFinder.py --input js.txt -o cli | tee secrefinder.txt
 	printf "\n"
 	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
 	cat js.txt | grep -aoP "(?<=(\"|\'|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\`))" | sort -u | tee endpoints.txt
