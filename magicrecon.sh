@@ -200,7 +200,7 @@ vulnerabilities(){
 	
 	printf "\n${GREEN}[+] Vulnerability: Missing headers${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Cheking security headers...${NORMAL}\n\n"
-	shcheck.py $domainName | tee headers.txt | grep 'Missing security header:\|There are\|--'
+	python3 ~/tools/shcheck/shcheck.py $domainName | tee headers.txt | grep 'Missing security header:\|There are\|--'
 	
 	printf "\n${GREEN}[+] Vulnerability: Email spoofing ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Cheking SPF and DMARC record...${NORMAL}\n\n"
