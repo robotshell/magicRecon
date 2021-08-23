@@ -22,10 +22,13 @@ export GOPATH=~/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 echo "export GOROOT=/usr/lib/go" >> ~/.bashrc
-echo "export GOPATH=$HOME/go" >> ~/.bashrc
+echo "export GOPATH=~/go" >> ~/.bashrc
 echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.bashrc
 
 source ~/.bashrc
+
+printf "${CYAN}Installing Cargo\n\n${NORMAL}"
+sudo apt install cargo
 
 printf "${BOLD}${MAGENTA}Installing repositories\n${NORMAL}"
 cd $HOME
@@ -75,8 +78,11 @@ pip3 install -r requirements.txt
 cd ..
 
 printf "${CYAN}Cloning Findomain\n${NORMAL}"
-wget https://github.com/findomain/findomain/releases/latest/download/findomain-linux
-hmod +x findomain-linux
+git clone https://github.com/findomain/findomain.git
+cd findomain
+cargo build --release
+sudo cp target/release/findomain /usr/bin/
+cd ..
 
 printf "${CYAN}Cloning anti-burl\n${NORMAL}"
 git clone https://github.com/tomnomnom/hacks
