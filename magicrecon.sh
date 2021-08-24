@@ -214,6 +214,11 @@ vulnerabilities(){
 	printf "${NORMAL}${CYAN}Checking all known misconfigurations in CORS implementations...${NORMAL}\n\n"
 	python3 ~/tools/Corsy/corsy.py -u $domainName | tee cors.txt
 	
+	printf "\n${GREEN}[+] Vulnerability:  Cross Site Request Forgery (CSRF/XSRF)${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Checking all known misconfigurations in CORS implementations...${NORMAL}\n\n"
+	xsrfprobe -u $domainName --crawl --malicious > csrf.txt
+	cat csrf.txt
+	
 	printf "\n${GREEN}[+] Vulnerability: Open Redirect${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Finding Open redirect entry points in the domain...${NORMAL}\n\n"
 	gau $domain | gf redirect archive | qsreplace | tee or_urls.txt
