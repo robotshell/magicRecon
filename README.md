@@ -63,6 +63,7 @@ With Magic Recon you can perform passive and active reconnaissance, vulnerabilit
 - Check if the domain is vulnerable to Email spoofing.
 - Check if the domain is vulnerable to Subdomain takeover.
 - Check if the domain is vulnerable to Cross-Origin Resource Sharing (CORS).
+- Check if different endpoints are vulnerable to CSRF. 
 - Look for entry points in the URL and check if it is vulnerable to Open Redirect.
 - Look for entry points in the URL and check if it is vulnerable to Cross-site scripting (XSS). 
 - Look for entry points in the URL and check if it is vulnerable to SQL Injection (SQLi).
