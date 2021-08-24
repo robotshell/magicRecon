@@ -91,6 +91,12 @@ go build main.go
 sudo mv main ~/go/bin/anti-burl
 cd ..
 
+printf "${CYAN}Cloning XSRFProbe\n${NORMAL}"
+git clone https://github.com/0xInfection/XSRFProbe.git
+cd XSRFProbe
+sudo python3 setup.py install
+cd ..
+
 printf "${CYAN}Cloning Gf-Patterns\n${NORMAL}"
 git clone https://github.com/1ndianl33t/Gf-Patterns
 mkdir ~/.gf
