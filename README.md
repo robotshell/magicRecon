@@ -56,6 +56,7 @@ With Magic Recon you can perform passive and active reconnaissance, vulnerabilit
 - Searches for emails on the domain, users and more things.
 - Enumerate public resources in AWS, Azure, and Google Cloud. 
 - Search juicy information via GitHub Dorks.
+- Check all entrys in robots.txt file.
 - Perform a port scan to discover open ports. 
 - Perform a dirsearch to find directories and files.
 - Perform a massive recon and vulnerability scan via Nuclei every X seconds.
