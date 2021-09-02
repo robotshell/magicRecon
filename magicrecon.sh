@@ -121,6 +121,10 @@ active_recon(){
 	
 	cd fingerprinting
 	
+	printf "\n${GREEN}[+] Robots.txt ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Checking directories and files from robots.txt...${NORMAL}\n\n"
+	python3 ~/tools/robotScraper/robotScraper.py -d $domain -s output_robot.txt 
+	
 	printf "\n${GREEN}[+] Nmap ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching open ports...${NORMAL}\n\n"
 	nmap -p- --open -T5 -v -n $domain -oN nmap.txt

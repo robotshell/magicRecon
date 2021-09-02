@@ -53,6 +53,9 @@ cd GitDorker
 pip3 install -r requirements.txt
 cd ..
 
+printf "${CYAN}Cloning RobotScraper\n${NORMAL}"
+git clone https://github.com/robotshell/robotScraper.git
+
 printf "${CYAN}Cloning nuclei-templates\n${NORMAL}"
 git clone https://github.com/projectdiscovery/nuclei-templates.git
 	
