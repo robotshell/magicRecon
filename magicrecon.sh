@@ -16,6 +16,7 @@ passive_recon(){
 	
 	domain=$1
 	domainName="https://"$domain
+	company=$(echo $domain | awk -F[.] '{print $1}')
 	
 	cd targets
 	
@@ -52,9 +53,14 @@ passive_recon(){
 	printf "${NORMAL}${CYAN}Searching DNS Queries...${NORMAL}\n\n"
 	nslookup $domain | tee nslookup.txt
 	
-	printf "\n${GREEN}[+] Reverse IP Lookup ${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Performing a reverse IP lookup to find all A records associated with an IP address...${NORMAL}\n\n"
-	amass intel -d $domain -whois | tee reverse.txt
+	printf "\n${GREEN}[+] Horizontal domain correlation/acquisitions ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Searching horizontal domains...${NORMAL}\n\n"
+	email=$(whois $domain | grep "Registrant Email" | egrep -ho "[[:graph:]]+@[[:graph:]]+")
+	curl -s -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36" "https://viewdns.info/reversewhois/?q=$email" | html2text | grep -Po "[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)" | tail -n +4  | head -n -1
+	
+	printf "\n${GREEN}[+] ASN Lookup ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Searching ASN number of a company that owns the domain...${NORMAL}\n\n"
+	python3 ~/tools/Asnlookup/asnlookup.py -o $company | tee -a asn.txt
 	
 	printf "\n${GREEN}[+] WhatWeb ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching platform, type of script, google analytics, web server platform, IP address, country, server headers, cookies...${NORMAL}\n\n"
@@ -125,14 +131,32 @@ active_recon(){
 	printf "${NORMAL}${CYAN}Checking directories and files from robots.txt...${NORMAL}\n\n"
 	python3 ~/tools/robotScraper/robotScraper.py -d $domain -s output_robot.txt 
 	
-	printf "\n${GREEN}[+] Nmap ${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Searching open ports...${NORMAL}\n\n"
-	nmap -p- --open -T5 -v -n $domain -oN nmap.txt
+	printf "\n${GREEN}[+] Hakrawler & gau ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Gathering URLs and JavaSript file locations...${NORMAL}\n\n"
+	echo $domainName | hakrawler | tee -a paths.txt
+	gau $domain >> paths.txt
+	sort -u paths.txt -o paths.txt
+	
+	printf "\n${GREEN}[+] Arjun ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Finding query parameters for URL endpoints....${NORMAL}\n\n"
+	arjun -u $domainName -oT parameters.txt
+	
+	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Obtaining all the JavaScript files of the domain ...${NORMAL}\n\n"	
+	echo $domain | gau | grep '\.js$' | httpx -mc 200 -content-type -silent | grep 'application/javascript' | awk -F '[' '{print $1}' | tee -a js.txt
+	printf "\n${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"
+	for url in $(cat js.txt);do
+		python3 ~/tools/SecretFinder/SecretFinder.py --input $url -o cli | tee -a secrefinder.txt
+	done
 	
 	printf "\n${GREEN}[+] DirSearch ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching interesting directories and files...${NORMAL}\n\n"
-	dirsearch -u $domain --deep-recursive --random-agent --exclude-status $excludeStatus -w $dictionary -o dirsearch
+	sudo dirsearch -u $domain --deep-recursive --random-agent --exclude-status $excludeStatus -w $dictionary -o dirsearch
 	
+	printf "\n${GREEN}[+] Nmap ${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Searching open ports...${NORMAL}\n\n"
+	nmap -p- --open -T5 -v -n $domain -oN nmap.txt
+
 	cd $actualDir
 }
 
@@ -218,10 +242,25 @@ vulnerabilities(){
 	printf "${NORMAL}${CYAN}Checking all known misconfigurations in CORS implementations...${NORMAL}\n\n"
 	python3 ~/tools/Corsy/corsy.py -u $domainName | tee cors.txt
 	
+	printf "\n${GREEN}[+] Vulnerability: 403 bypass${NORMAL}\n"
+	printf "${NORMAL}${CYAN}Gathering endpoints that they return 403 status code...${NORMAL}\n\n"
+	touch endpoints_403.txt
+	save_ouput=$actualDir"/targets/"$domain"/vulnerabilities/endpoints_403.txt"
+	sudo dirsearch -u $domainName --random-agent --include-status 403 -w $dictionary --format plain -o $save_ouput
+	printf "\n${NORMAL}${CYAN}Trying to bypass 403 status code...${NORMAL}\n\n"
+	for url in $(cat endpoints_403.txt);
+	do
+		domainAWK=$domain":443"
+		endpoint=$(echo $url | awk -F $domainAWK '{print $2}') 
+		if [ -n "$endpoint" ]
+		then
+	      		python3 ~/tools/403bypass/4xx.py $domainName $endpoint | tee -a bypass403.txt
+		fi
+	done
+	
 	printf "\n${GREEN}[+] Vulnerability:  Cross Site Request Forgery (CSRF/XSRF)${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Checking all known misconfigurations in CORS implementations...${NORMAL}\n\n"
-	xsrfprobe -u $domainName --crawl --malicious > csrf.txt
-	cat csrf.txt
+	printf "${NORMAL}${CYAN}Checking all known misconfigurations in CSRF/XSRF implementations...${NORMAL}\n\n"
+	python3 ~/tools/Bolt/bolt.py -u $domainName -l 2 | tee -a csrf.txt
 	
 	printf "\n${GREEN}[+] Vulnerability: Open Redirect${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Finding Open redirect entry points in the domain...${NORMAL}\n\n"
@@ -236,15 +275,6 @@ vulnerabilities(){
 	printf "${NORMAL}${CYAN}Trying to find SSRF vulnerabilities...${NORMAL}\n\n"
 	printf "${RED}[!] Remember to enter your Burp Collaborator link in the configuration.cfg file \n\n${NORMAL}"
 	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace $burpCollaborator
-
-	printf "\n${GREEN}[+] Vulnerability: Secrets in JS${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Obtaining all the JavaScript files of the domain ...${NORMAL}\n\n"	
-	gau $domain |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' | tee js.txt 
-	printf "${NORMAL}${CYAN}Discovering sensitive data like apikeys, accesstoken, authorizations, jwt, etc in JavaScript files...${NORMAL}\n\n"
-	python3 ~/tools/SecretFinder/SecretFinder.py --input js.txt -o cli | tee secrefinder.txt
-	printf "\n"
-	printf "${NORMAL}${CYAN}Searching enpoints in JS files...${NORMAL}\n\n"
-	cat js.txt | grep -aoP "(?<=(\"|\'|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\`))" | sort -u | tee endpoints.txt
 	
 	printf "\n${GREEN}[+] Vulnerability: XSS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find XSS vulnerabilities...${NORMAL}\n\n"
@@ -260,11 +290,6 @@ vulnerabilities(){
 	printf "\n${GREEN}[+] Vulnerability: Multiples vulnerabilities${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Running multiple templates to discover vulnerabilities...${NORMAL}\n\n"
 	nuclei -u $domain -t ~/tools/nuclei-templates/ -severity low,medium,high,critical -silent -o mutiple_vulnerabilities.txt
-	
-	printf "\n${GREEN}[+] Vulnerability: CMS Vulnerabilities${NORMAL}\n"
-	printf "${NORMAL}${CYAN}Checking if the domain is a CMS and contains vulnerabilities...${NORMAL}\n\n"
-	python3 ~/tools/CMSeeK/cmseek.py -u $domain --random-agent | tee cms.txt  
-
 	
 	cd $actualDir
 }

@@ -30,10 +30,19 @@ source ~/.bashrc
 printf "${CYAN}Installing Cargo\n\n${NORMAL}"
 sudo apt install cargo
 
+printf "${CYAN}Installing html2text\n\n${NORMAL}"
+sudo apt install html2text
+
 printf "${BOLD}${MAGENTA}Installing repositories\n${NORMAL}"
 cd $HOME
 mkdir tools
 cd tools
+
+printf "${CYAN}Cloning ASNLookup\n${NORMAL}"
+git clone https://github.com/yassineaboukir/Asnlookup
+cd Asnlookup
+pip3 install -r requirements.txt
+cd ..
 
 printf "${CYAN}Cloning ssl-checker\n${NORMAL}"
 git clone https://github.com/narbehaj/ssl-checker
@@ -55,6 +64,9 @@ cd ..
 
 printf "${CYAN}Cloning RobotScraper\n${NORMAL}"
 git clone https://github.com/robotshell/robotScraper.git
+
+printf "${CYAN}Install Arjun\n${NORMAL}"
+pip3 install arjun
 
 printf "${CYAN}Cloning nuclei-templates\n${NORMAL}"
 git clone https://github.com/projectdiscovery/nuclei-templates.git
@@ -95,9 +107,9 @@ sudo mv main ~/go/bin/anti-burl
 cd ..
 
 printf "${CYAN}Cloning XSRFProbe\n${NORMAL}"
-git clone https://github.com/0xInfection/XSRFProbe.git
-cd XSRFProbe
-sudo python3 setup.py install
+git clone https://github.com/s0md3v/Bolt
+cd Bolt
+pip3 install -r requirements.txt
 cd ..
 
 printf "${CYAN}Cloning Gf-Patterns\n${NORMAL}"
@@ -136,6 +148,10 @@ sudo cp ~/go/bin/aquatone /usr/local/bin
 printf "${CYAN}Installing Subfinder\n${NORMAL}"
 GO111MODULE=on go get -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
 sudo cp ~/go/bin/subfinder /usr/local/bin 
+
+printf "${CYAN}Installing Hakrawler\n${NORMAL}"
+go install github.com/hakluke/hakrawler@latest
+sudo cp ~/go/bin/hakrawler /usr/local/bin 
 
 printf "${CYAN}Installing anew\n${NORMAL}"
 go get -u github.com/tomnomnom/anew
