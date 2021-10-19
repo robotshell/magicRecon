@@ -56,7 +56,7 @@ passive_recon(){
 	printf "\n${GREEN}[+] Horizontal domain correlation/acquisitions ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching horizontal domains...${NORMAL}\n\n"
 	email=$(whois $domain | grep "Registrant Email" | egrep -ho "[[:graph:]]+@[[:graph:]]+")
-	curl -s -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36" "https://viewdns.info/reversewhois/?q=$email" | html2text | grep -Po "[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)" | tail -n +4  | head -n -1
+	curl -s -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36" "https://viewdns.info/reversewhois/?q=$email" | html2text | grep -Po "[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)" | tail -n +4  | head -n -1 
 	
 	printf "\n${GREEN}[+] ASN Lookup ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching ASN number of a company that owns the domain...${NORMAL}\n\n"
@@ -99,6 +99,22 @@ passive_recon(){
 	printf "${NORMAL}${CYAN}Searching interesting data on GitHub...${NORMAL}\n\n"
 	domainName="https://"$domain
 	python3 ~/tools/GitDorker/GitDorker.py -t $github_token -d ~/tools/GitDorker/Dorks/alldorksv3 -q $domain -o dorks.txt
+	
+	if [ "$2" = true ];
+	then 
+		printf "\n${GREEN}[+] Whois results: ${NORMAL}\n" | notify -silent | cat whois.txt | notify -silent
+		printf "\n${GREEN}[+] Nslookup results: ${NORMAL}\n" | notify -silent | cat nslookup.txt | notify -silent
+		printf "\n${GREEN}[+] ASN Lookup results: ${NORMAL}\n" | notify -silent | cat asn.txt | notify -silent
+		printf "\n${GREEN}[+] WhatWeb results: ${NORMAL}\n" | notify -silent | cat whatweb.txt | notify -silent
+		printf "\n${GREEN}[+] SSL Checker results: ${NORMAL}\n" | notify -silent | cat ssl.txt | notify -silent
+		printf "\n${GREEN}[+] TheHarvester users results: ${NORMAL}\n" | notify -silent | cat users.txt | notify -silent
+		printf "\n${GREEN}[+] TheHarvester ips results: ${NORMAL}\n" | notify -silent | cat ips.txt | notify -silent
+		printf "\n${GREEN}[+] TheHarvester emails results: ${NORMAL}\n" | notify -silent | cat emails.txt | notify -silent
+		printf "\n${GREEN}[+] TheHarvester hosts results: ${NORMAL}\n" | notify -silent | cat hosts.txt | notify -silent
+		printf "\n${GREEN}[+] CloudEnum results: ${NORMAL}\n" | notify -silent | cat cloud.txt | notify -silent
+		printf "\n${GREEN}[+] GitDorker results: ${NORMAL}\n" | notify -silent | cat dorks.txt | notify -silent
+		
+	fi
 	
 	cd $actualDir
 }
@@ -156,6 +172,16 @@ active_recon(){
 	printf "\n${GREEN}[+] Nmap ${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Searching open ports...${NORMAL}\n\n"
 	nmap -p- --open -T5 -v -n $domain -oN nmap.txt
+	
+	if [ "$2" = true ]; 
+	then
+		printf "\n${GREEN}[+] Robots.txt results: ${NORMAL}\n" | notify -silent | cat output_robot.txt | notify -silent
+		printf "\n${GREEN}[+] Hakrawler & gau results: ${NORMAL}\n" | notify -silent | cat paths.txt | notify -silent
+		printf "\n${GREEN}[+] Arjun results: ${NORMAL}\n" | notify -silent | cat parameters.txt | notify -silent
+		printf "\n${GREEN}[+] Secrets in JS results: ${NORMAL}\n" | notify -silent | cat secrefinder.txt | notify -silent
+		printf "\n${GREEN}[+] Dirsearch results: ${NORMAL}\n" | notify -silent | cat dirsearch | notify -silent
+		printf "\n${GREEN}[+] Nmap results: ${NORMAL}\n" | notify -silent | cat nmap.txt | notify -silent		
+	fi
 
 	cd $actualDir
 }
@@ -274,7 +300,7 @@ vulnerabilities(){
 	printf "\n${GREEN}[+] Vulnerability: SSRF${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find SSRF vulnerabilities...${NORMAL}\n\n"
 	printf "${RED}[!] Remember to enter your Burp Collaborator link in the configuration.cfg file \n\n${NORMAL}"
-	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace $burpCollaborator
+	findomain -t $domain | httpx -silent -threads 1000 | gau |  grep "=" | qsreplace $burpCollaborator | tee -a ssrf.txt
 	
 	printf "\n${GREEN}[+] Vulnerability: XSS${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Trying to find XSS vulnerabilities...${NORMAL}\n\n"
@@ -285,11 +311,26 @@ vulnerabilities(){
 	gau $domain | gf sqli | tee sqli_paramaters.txt
 	printf "\n"
 	printf "${NORMAL}${CYAN}Checking if the entry points are vulnerable...${NORMAL}\n\n"
-	sqlmap -m sqli_paramaters.txt --batch --random-agent --level 1
+	sqlmap -m sqli_paramaters.txt --batch --random-agent --level 1 | tee -a sqli.txt
 	
 	printf "\n${GREEN}[+] Vulnerability: Multiples vulnerabilities${NORMAL}\n"
 	printf "${NORMAL}${CYAN}Running multiple templates to discover vulnerabilities...${NORMAL}\n\n"
 	nuclei -u $domain -t ~/tools/nuclei-templates/ -severity low,medium,high,critical -silent -o mutiple_vulnerabilities.txt
+	
+	if [ "$2" = true ];
+	then 
+		printf "\n${GREEN}[+] Missing headers results: ${NORMAL}\n" | notify -silent | cat headers.txt | notify -silent
+		printf "\n${GREEN}[+] Email spoofing results: ${NORMAL}\n" | notify -silent | cat spoof.json | notify -silent
+		printf "\n${GREEN}[+] Subdomain takeover results: ${NORMAL}\n" | notify -silent | cat takeover.txt | notify -silent
+		printf "\n${GREEN}[+] CORS results: ${NORMAL}\n" | notify -silent | cat cors.txt | notify -silent
+		printf "\n${GREEN}[+] 403 bypass results: ${NORMAL}\n" | notify -silent | cat bypass403.txt | notify -silent
+		printf "\n${GREEN}[+] Cross Site Request Forgery (CSRF/XSRF) results: ${NORMAL}\n" | notify -silent | cat csrf.txt | notify -silent
+		printf "\n${GREEN}[+] Open Redirect results: ${NORMAL}\n" | notify -silent | cat or_urls.txt | notify -silent
+		printf "\n${GREEN}[+] SSRF results: ${NORMAL}\n" | notify -silent | cat ssrf.txt | notify -silent
+		printf "\n${GREEN}[+] XSS results: ${NORMAL}\n" | notify -silent | cat xss.txt | notify -silent	
+		printf "\n${GREEN}[+] SQLi results: ${NORMAL}\n" | notify -silent | cat sqli.txt | notify -silent
+		printf "\n${GREEN}[+] Nuclei results: ${NORMAL}\n" | notify -silent | cat mutiple_vulnerabilities.txt | notify -silent		
+	fi
 	
 	cd $actualDir
 }
