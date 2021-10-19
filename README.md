@@ -206,7 +206,7 @@ EXTRA OPTIONS
 
 # To do :mage_man:
 - [x] Change tool operation to parameters.
-- [ ] Improve the use of Notify.  
+- [x] Improve the use of Notify.  
 - [ ] Add new interesting tools to find more vulnerabilities.
 - [ ] Save results in other formats.
 - [ ] Save the results in a document as a report.
@@ -239,7 +239,6 @@ Do you want to have a conversation in private? email me : robotshelld@gmail.com
 * [@s0md3v](https://twitter.com/s0md3v)
 * [@ofjaaah](https://twitter.com/ofjaaah)
 * [@KingOfBugbounty](https://twitter.com/KingOfBugbounty)
-* 
 -------------------------------------
 
 # About me
