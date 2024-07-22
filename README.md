@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/robotshell/magicRecon"><img src="https://github.com/robotshell/magicRecon/blob/master/images/logo.png" alt="magicRecon"></a>
+  <a href="https://ibb.co/kG6XBMQ"><img src="https://i.ibb.co/QJjMQXr/magicrecon.png" alt="magicrecon" style="width:100%"></a>
   <br>
   MagicRecon: Fast, simple and effective 
   <br>
