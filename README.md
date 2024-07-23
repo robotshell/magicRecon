@@ -34,12 +34,6 @@ With Magic Recon you can perform passive and active reconnaissance, vulnerabilit
 
 -------------------------------------
 
-# Disclaimer :warning:
-**The author of this document take no responsibility for correctness. This project is merely here to help guide security researchers towards determining whether something is vulnerable or not, but does not guarantee accuracy.**
-**Warning: This code was originally created for personal use, it generates a substantial amount of traffic, please use with caution.**
-
--------------------------------------
-
 # Main features :boom: 
 - Save the results in an organized way in different formats.
 - Subdomain enumeration.
@@ -220,8 +214,6 @@ You can contribute in following ways:
 - Give suggestions **(Ideas)** to make it better.
 - Spread the word.
 
-Do you want to have a conversation in private? email me : robotshelld@gmail.com
-
 ***MagicRecon*** is licensed under [GPL-3.0 License](https://github.com/robotshell/magicRecon/blob/master/LICENSE)
 
 -------------------------------------
@@ -237,18 +229,6 @@ Do you want to have a conversation in private? email me : robotshelld@gmail.com
 * [@KingOfBugbounty](https://twitter.com/KingOfBugbounty)
 -------------------------------------
 
-# About me
-[Twitter](https://twitter.com/robotshelld)
+# Disclaimer
 
--------------------------------------
-
-# Useful? :thinking:
-* If you've earned a bug bounty using this tool, please consider donating to support it's development. You can help me to develop more useful scripts and tools. Thanks! :heart_eyes:
-<p align="center">
-  <a href="https://www.buymeacoffee.com/robotshell" target="_blank">
-    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee">
-  </a>
-    <a href="https://www.paypal.com/paypalme/robotshell" target="_blank">
-      <img src="https://www.paypalobjects.com/digitalassets/c/website/marketing/apac/C2/logos-buttons/optimize/34_Blue_PayPal_Pill_Button.png" alt="PayPal">
-  </a>
-</p>
+This tool is intended for educational and research purposes only. The author and contributors are not responsible for any misuse of this tool. Users are advised to use this tool responsibly and only on systems for which they have explicit permission. Unauthorized access to systems, networks, or data is illegal and unethical. Always obtain proper authorization before conducting any kind of activities that could impact other users or systems.
