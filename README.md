@@ -28,10 +28,6 @@
   </a>
 </p>
 
-Hi hacker 😉
-
-Welcome to the MagicRecon tool repository!
-
 MagicRecon is a powerful shell script to maximize the recon and data collection process of an objective and finding common vulnerabilities, all this saving the results obtained in an organized way in directories and with various formats.
 
 With Magic Recon you can perform passive and active reconnaissance, vulnerability analysis, subdomain scan and many more!
