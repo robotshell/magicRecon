@@ -1,0 +1,35 @@
++---------------------+
+| Analyzing 1 host(s) |
++---------------------+
+	[32m[✓][39m hackycorp.com
+	------------------
+		Issued domain: hackycorp.com
+		Issued to: N/A
+		Issued by: Let's Encrypt (US)
+		Server IP: 51.158.147.132
+		Valid from: 2026-07-04
+		Valid to: 2026-10-02 (80 days left)
+		Validity days: 89
+		TLS Version: TLSv1.2
+		Cipher: ECDHE-RSA-CHACHA20-POLY1305
+		Chain length: 3
+		Certificate trusted: [32mTrue[39m
+		Hostname matches: [32mTrue[39m
+		Certificate valid: True
+		Certificate S/N: 491835649558861378523953798870119837188470
+		Certificate SHA1 FP: e58eecb91f5c0daceb87ba49800da80b28efcff4
+		Certificate SHA256 FP: 21f272fc8a1af35e8ba33384b9d3c8c064625df27010f98cb1d6f1392fb2c9b7
+		Certificate version: 2
+		Certificate algorithm: sha256WithRSAEncryption
+		Public key: RSA 2048 bits
+		Signature hash: sha256
+		Expired: False
+		Certificate SANs: 
+		 \_ 66177e3f25e3ea0713807b1dc5f0b9df.hackycorp.com
+		 \_ hackycorp.com
+		 \_ www.hackycorp.com
+
+
++----------------------------------------------------------------------------------------------------------+
+| Successful: 1 | Failed: 0 | Valid: 1 | Warning: 0 | Expired: 0 | Untrusted: 0 | Duration: 0:00:00.633416 |
++----------------------------------------------------------------------------------------------------------+
