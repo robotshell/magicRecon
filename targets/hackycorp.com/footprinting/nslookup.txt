@@ -1,0 +1,7 @@
+Server:		192.168.1.1
+Address:	192.168.1.1#53
+
+Non-authoritative answer:
+Name:	hackycorp.com
+Address: 51.158.147.132
+
